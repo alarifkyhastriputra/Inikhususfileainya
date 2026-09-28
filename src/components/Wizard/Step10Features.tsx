@@ -56,14 +56,14 @@ export const Step10Features: React.FC<Step10Props> = ({ data, updateData }) => {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
+    <div className="space-y-6 max-w-4xl mx-auto font-['Plus_Jakarta_Sans',sans-serif]">
       <div className="text-center space-y-1.5 mb-6">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold">
-          <Sparkles className="w-3.5 h-3.5" />
-          Langkah 10: Fitur & Interaktivitas
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-semibold">
+          <Sparkles className="w-3.5 h-3.5 text-white" />
+          <span>Langkah 10: Fitur & Interaktivitas</span>
         </div>
         <h2 className="text-2xl font-bold text-white tracking-tight">Pilih Fitur Otomatis Website</h2>
-        <p className="text-xs text-slate-400">
+        <p className="text-xs text-zinc-400">
           Semua fitur yang Anda pilih akan diintegrasikan dengan JavaScript interaktif siap pakai.
         </p>
       </div>
@@ -79,15 +79,15 @@ export const Step10Features: React.FC<Step10Props> = ({ data, updateData }) => {
               onClick={() => toggleFeature(feat.id)}
               className={`p-3.5 rounded-2xl border cursor-pointer transition-all flex flex-col justify-between ${
                 isSelected
-                  ? 'bg-gradient-to-br from-indigo-900/40 to-purple-950/40 border-indigo-500 shadow-md shadow-indigo-600/20'
-                  : 'bg-[#111827] border-slate-800 hover:border-slate-700 hover:bg-[#1e293b]/60'
+                  ? 'bg-zinc-900 border-white shadow-xl ring-1 ring-white/20'
+                  : 'bg-zinc-950 border-zinc-800 hover:border-zinc-700 hover:bg-zinc-900/60'
               }`}
             >
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <div
-                    className={`w-8 h-8 rounded-xl flex items-center justify-center ${
-                      isSelected ? 'bg-indigo-600 text-white' : 'bg-[#1e293b] text-slate-400'
+                    className={`w-8 h-8 rounded-xl flex items-center justify-center transition ${
+                      isSelected ? 'bg-white text-black font-bold' : 'bg-zinc-900 text-zinc-400'
                     }`}
                   >
                     <Icon className="w-4 h-4" />
@@ -95,19 +95,19 @@ export const Step10Features: React.FC<Step10Props> = ({ data, updateData }) => {
 
                   <div
                     className={`w-5 h-5 rounded-md flex items-center justify-center transition ${
-                      isSelected ? 'bg-indigo-500 text-white' : 'border border-slate-700 bg-slate-800/60'
+                      isSelected ? 'bg-white text-black font-bold' : 'border border-zinc-700 bg-zinc-900'
                     }`}
                   >
                     {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
                   </div>
                 </div>
 
-                <h4 className={`text-xs font-bold ${isSelected ? 'text-white' : 'text-slate-200'}`}>
+                <h4 className={`text-xs font-bold ${isSelected ? 'text-white' : 'text-zinc-200'}`}>
                   {feat.label}
                 </h4>
               </div>
 
-              <p className="text-[10px] text-slate-400 mt-2 line-clamp-2 leading-relaxed">
+              <p className="text-[10px] text-zinc-400 mt-2 line-clamp-2 leading-relaxed">
                 {feat.desc}
               </p>
             </div>

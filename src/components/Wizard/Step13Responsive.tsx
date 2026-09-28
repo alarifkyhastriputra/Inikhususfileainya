@@ -21,14 +21,14 @@ export const Step13Responsive: React.FC<Step13Props> = ({ data, updateData }) =>
   };
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
+    <div className="space-y-6 max-w-4xl mx-auto font-['Plus_Jakarta_Sans',sans-serif]">
       <div className="text-center space-y-1.5 mb-6">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold">
-          <Sparkles className="w-3.5 h-3.5" />
-          Langkah 13: Optimasi Responsive
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-semibold">
+          <Sparkles className="w-3.5 h-3.5 text-white" />
+          <span>Langkah 13: Optimasi Responsive</span>
         </div>
         <h2 className="text-2xl font-bold text-white tracking-tight">Kesiapan Tampilan Semua Perangkat</h2>
-        <p className="text-xs text-slate-400">
+        <p className="text-xs text-zinc-400">
           Website Anda otomatis disesuaikan secara dinamis agar terlihat sempurna di HP, tablet, maupun layar komputer.
         </p>
       </div>
@@ -48,22 +48,22 @@ export const Step13Responsive: React.FC<Step13Props> = ({ data, updateData }) =>
               onClick={() => toggleDevice(item.key)}
               className={`p-4 rounded-2xl border cursor-pointer transition-all flex flex-col justify-between ${
                 isEnabled
-                  ? 'bg-indigo-900/30 border-indigo-500 shadow-md shadow-indigo-600/20 text-white'
-                  : 'bg-[#111827] border-slate-800 text-slate-400 opacity-60'
+                  ? 'bg-zinc-900 border-white shadow-xl ring-1 ring-white/20 text-white'
+                  : 'bg-zinc-950 border-zinc-800 text-zinc-400 opacity-60'
               }`}
             >
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <div
-                    className={`w-9 h-9 rounded-xl flex items-center justify-center ${
-                      isEnabled ? 'bg-indigo-600 text-white' : 'bg-[#1e293b] text-slate-500'
+                    className={`w-9 h-9 rounded-xl flex items-center justify-center transition ${
+                      isEnabled ? 'bg-white text-black font-bold' : 'bg-zinc-900 text-zinc-500'
                     }`}
                   >
                     <Icon className="w-5 h-5" />
                   </div>
                   <div
                     className={`w-5 h-5 rounded-md flex items-center justify-center transition ${
-                      isEnabled ? 'bg-indigo-500 text-white' : 'border border-slate-700 bg-slate-800'
+                      isEnabled ? 'bg-white text-black font-bold' : 'border border-zinc-700 bg-zinc-900'
                     }`}
                   >
                     {isEnabled && <Check className="w-3 h-3 stroke-[3]" />}
@@ -71,25 +71,25 @@ export const Step13Responsive: React.FC<Step13Props> = ({ data, updateData }) =>
                 </div>
                 <h4 className="text-xs font-bold">{item.label}</h4>
               </div>
-              <p className="text-[11px] text-slate-400 mt-2 leading-relaxed">{item.desc}</p>
+              <p className="text-[11px] text-zinc-400 mt-2 leading-relaxed">{item.desc}</p>
             </div>
           );
         })}
       </div>
 
       {/* Responsive Preview Simulator */}
-      <div className="bg-[#111827] p-5 rounded-2xl border border-slate-800 space-y-4">
+      <div className="bg-zinc-950 p-5 rounded-2xl border border-zinc-800 space-y-4 shadow-xl">
         <div className="flex items-center justify-between">
-          <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider">
+          <h3 className="text-xs font-bold text-white uppercase tracking-wider">
             Simulasi Tampilan
           </h3>
 
-          <div className="flex items-center gap-1 bg-[#1e293b] p-1 rounded-xl border border-slate-700">
+          <div className="flex items-center gap-1 bg-zinc-900 p-1 rounded-xl border border-zinc-800">
             <button
               type="button"
               onClick={() => setActivePreviewMode('desktop')}
-              className={`px-3 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition ${
-                activePreviewMode === 'desktop' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'
+              className={`px-3 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer ${
+                activePreviewMode === 'desktop' ? 'bg-white text-black font-bold shadow' : 'text-zinc-400 hover:text-white'
               }`}
             >
               <Monitor className="w-3.5 h-3.5" />
@@ -98,8 +98,8 @@ export const Step13Responsive: React.FC<Step13Props> = ({ data, updateData }) =>
             <button
               type="button"
               onClick={() => setActivePreviewMode('mobile')}
-              className={`px-3 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition ${
-                activePreviewMode === 'mobile' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'
+              className={`px-3 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer ${
+                activePreviewMode === 'mobile' ? 'bg-white text-black font-bold shadow' : 'text-zinc-400 hover:text-white'
               }`}
             >
               <Smartphone className="w-3.5 h-3.5" />
@@ -109,23 +109,23 @@ export const Step13Responsive: React.FC<Step13Props> = ({ data, updateData }) =>
         </div>
 
         {/* Visual Frame */}
-        <div className="flex justify-center p-4 bg-[#090D16] rounded-xl border border-slate-800/80">
+        <div className="flex justify-center p-4 bg-black rounded-xl border border-zinc-850">
           <div
-            className={`transition-all duration-300 p-4 rounded-xl border border-slate-700 bg-[#1e293b] ${
+            className={`transition-all duration-300 p-4 rounded-xl border border-zinc-800 bg-zinc-900 ${
               activePreviewMode === 'mobile' ? 'w-[320px]' : 'w-full'
             }`}
           >
-            <div className="flex items-center justify-between pb-2 mb-3 border-b border-slate-700 text-xs">
+            <div className="flex items-center justify-between pb-2 mb-3 border-b border-zinc-800 text-xs">
               <span className="font-bold text-white truncate">{data.siteName || 'Vimos Store'}</span>
-              <span className="text-[10px] text-indigo-400 font-mono">
+              <span className="text-[10px] text-zinc-400 font-mono">
                 {activePreviewMode === 'mobile' ? '375 x 812' : '100% Fluid'}
               </span>
             </div>
             <div className="space-y-2">
-              <div className="h-4 bg-slate-700/60 rounded w-3/4"></div>
-              <div className="h-3 bg-slate-700/40 rounded w-full"></div>
-              <div className="h-3 bg-slate-700/40 rounded w-5/6"></div>
-              <div className="h-7 bg-indigo-600 rounded-lg w-1/2 mt-2"></div>
+              <div className="h-4 bg-zinc-800 rounded w-3/4"></div>
+              <div className="h-3 bg-zinc-800/60 rounded w-full"></div>
+              <div className="h-3 bg-zinc-800/60 rounded w-5/6"></div>
+              <div className="h-7 bg-white rounded-lg w-1/2 mt-2"></div>
             </div>
           </div>
         </div>

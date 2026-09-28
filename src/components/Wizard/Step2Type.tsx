@@ -515,14 +515,14 @@ export const Step2Type: React.FC<Step2Props> = ({ data, updateData }) => {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
+    <div className="space-y-6 max-w-4xl mx-auto font-['Plus_Jakarta_Sans',sans-serif]">
       <div className="text-center space-y-1.5 mb-6">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold">
-          <Sparkles className="w-3.5 h-3.5" />
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-semibold">
+          <Sparkles className="w-3.5 h-3.5 text-white" />
           <span>Langkah 2: Model & Jenis Website</span>
         </div>
         <h2 className="text-2xl font-bold text-white tracking-tight">Pilih Jenis Website Anda</h2>
-        <p className="text-xs text-slate-400 max-w-xl mx-auto">
+        <p className="text-xs text-zinc-400 max-w-xl mx-auto">
           Setiap jenis website (Toko Online, Blog, Portofolio, Kafe/Restoran, Company Profile) akan memiliki langkah-langkah, katalog item, dan fitur yang <strong>disesuaikan secara khusus</strong> untuk kebutuhan Anda!
         </p>
       </div>
@@ -538,15 +538,15 @@ export const Step2Type: React.FC<Step2Props> = ({ data, updateData }) => {
               onClick={() => handleSelectType(type)}
               className={`p-4 rounded-2xl border cursor-pointer transition-all duration-200 relative group flex items-start gap-3.5 ${
                 isSelected
-                  ? 'bg-gradient-to-br from-indigo-900/50 via-indigo-950/70 to-purple-950/50 border-indigo-500 shadow-xl shadow-indigo-600/20 ring-1 ring-indigo-500/30'
-                  : 'bg-[#111827] border-slate-800 hover:border-slate-700 hover:bg-[#1e293b]/60'
+                  ? 'bg-zinc-900 border-white shadow-xl ring-1 ring-white/20'
+                  : 'bg-zinc-950 border-zinc-800 hover:border-zinc-700 hover:bg-zinc-900/60'
               }`}
             >
               <div
                 className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition ${
                   isSelected
-                    ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30'
-                    : 'bg-[#1e293b] text-slate-400 group-hover:text-indigo-400'
+                    ? 'bg-white text-black shadow font-bold'
+                    : 'bg-zinc-900 text-zinc-400 group-hover:text-white'
                 }`}
               >
                 <Icon className="w-5 h-5" />
@@ -554,21 +554,21 @@ export const Step2Type: React.FC<Step2Props> = ({ data, updateData }) => {
 
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-1 mb-1">
-                  <h3 className={`text-sm font-bold truncate ${isSelected ? 'text-white' : 'text-slate-200'}`}>
+                  <h3 className={`text-sm font-bold truncate ${isSelected ? 'text-white' : 'text-zinc-200'}`}>
                     {type.label}
                   </h3>
                   {isSelected && (
-                    <div className="w-5 h-5 rounded-full bg-indigo-500 text-white flex items-center justify-center shrink-0">
+                    <div className="w-5 h-5 rounded-full bg-white text-black flex items-center justify-center shrink-0">
                       <Check className="w-3 h-3 stroke-[3]" />
                     </div>
                   )}
                 </div>
 
-                <span className="inline-block px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 text-[10px] font-bold mb-1.5">
+                <span className="inline-block px-2 py-0.5 rounded bg-zinc-800 border border-zinc-700 text-zinc-300 text-[10px] font-bold mb-1.5">
                   {type.badge}
                 </span>
 
-                <p className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed">
+                <p className="text-[11px] text-zinc-400 line-clamp-2 leading-relaxed">
                   {type.desc}
                 </p>
               </div>

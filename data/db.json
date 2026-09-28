@@ -1,6 +1,18 @@
 {
   "users": [
     {
+      "uid": "usr_1790581615594_piade",
+      "serialCode": "VMS-1001",
+      "email": "testuser@gmail.com",
+      "password": "testpassword123",
+      "displayName": "Test User",
+      "role": "member",
+      "status": "active",
+      "createdAt": "2026-09-28T07:46:55.594Z",
+      "credits": 50,
+      "lastLogin": "2026-09-28T07:47:00.895Z"
+    },
+    {
       "uid": "usr_1790523796570_z7ug2",
       "email": "member@gmail.com",
       "password": "member123",
@@ -103,8 +115,40 @@
   ],
   "settings": {
     "requireApprovalForNewUsers": false,
-    "defaultCreditsPerUser": 50,
+    "defaultCreditsPerUser": 0,
     "aiModel": "gemini-3.8-flash",
     "systemNotice": "Selamat datang di vimos.ai platform!"
-  }
+  },
+  "tutorials": [
+    {
+      "id": "tut_1",
+      "title": "Panduan Lengkap: Cara Membuat Toko Online Modern dengan vimos.ai",
+      "description": "Pelajari 15 langkah mudah membuat toko online otomatis, menghubungkan tombol checkout WhatsApp, dan mengatur tata letak katalog produk.",
+      "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "category": "Toko Online",
+      "duration": "05:30",
+      "createdAt": "2026-09-28T07:46:49.880Z",
+      "authorEmail": "hasbullahbeloh27@gmail.com"
+    },
+    {
+      "id": "tut_2",
+      "title": "Cara Menggunakan & Upload Link Imgur untuk Foto Produk & Galeri",
+      "description": "Tutorial upload gambar ke Imgur (gratis & cepat) lalu tempelkan tautannya ke vimos.ai untuk mengganti foto produk, portofolio, dan banner hero.",
+      "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "category": "Upload Foto & Imgur",
+      "duration": "03:45",
+      "createdAt": "2026-09-28T07:46:49.880Z",
+      "authorEmail": "hasbullahbeloh27@gmail.com"
+    },
+    {
+      "id": "tut_3",
+      "title": "Panduan Admin: Mengelola Member, Kode Seri, & Top-Up Kredit",
+      "description": "Cara mudah admin mencari member dengan kode seri (VMS-XXXX), menambah saldo kredit, dan mereset password akun.",
+      "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "category": "Admin Dashboard",
+      "duration": "04:15",
+      "createdAt": "2026-09-28T07:46:49.880Z",
+      "authorEmail": "hasbullahbeloh27@gmail.com"
+    }
+  ]
 }

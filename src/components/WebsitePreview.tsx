@@ -70,17 +70,17 @@ export const WebsitePreview: React.FC<WebsitePreviewProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full bg-[#0B0F19] rounded-2xl border border-slate-800 overflow-hidden shadow-2xl">
+    <div className="flex flex-col h-full bg-black rounded-2xl border border-zinc-800 overflow-hidden shadow-2xl text-zinc-100 font-['Plus_Jakarta_Sans',sans-serif]">
       
       {/* Top Preview Control Bar */}
-      <div className="px-4 py-3 bg-[#111827] border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
+      <div className="px-4 py-3 bg-zinc-950 border-b border-zinc-800 flex flex-wrap items-center justify-between gap-3">
         
         {/* Left: Viewport Toggles */}
-        <div className="flex items-center gap-1 bg-[#1e293b]/80 p-1 rounded-xl border border-slate-700/60">
+        <div className="flex items-center gap-1 bg-zinc-900 p-1 rounded-xl border border-zinc-800">
           <button
             onClick={() => setViewport('desktop')}
-            className={`p-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition ${
-              viewport === 'desktop' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'
+            className={`p-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition cursor-pointer ${
+              viewport === 'desktop' ? 'bg-white text-black font-bold shadow-sm' : 'text-zinc-400 hover:text-white'
             }`}
             title="Desktop View (100%)"
           >
@@ -90,8 +90,8 @@ export const WebsitePreview: React.FC<WebsitePreviewProps> = ({
 
           <button
             onClick={() => setViewport('tablet')}
-            className={`p-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition ${
-              viewport === 'tablet' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'
+            className={`p-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition cursor-pointer ${
+              viewport === 'tablet' ? 'bg-white text-black font-bold shadow-sm' : 'text-zinc-400 hover:text-white'
             }`}
             title="Tablet View (768px)"
           >
@@ -101,8 +101,8 @@ export const WebsitePreview: React.FC<WebsitePreviewProps> = ({
 
           <button
             onClick={() => setViewport('mobile')}
-            className={`p-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition ${
-              viewport === 'mobile' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'
+            className={`p-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition cursor-pointer ${
+              viewport === 'mobile' ? 'bg-white text-black font-bold shadow-sm' : 'text-zinc-400 hover:text-white'
             }`}
             title="Mobile View (375px)"
           >
@@ -112,24 +112,24 @@ export const WebsitePreview: React.FC<WebsitePreviewProps> = ({
         </div>
 
         {/* Center: Mode Switcher */}
-        <div className="flex items-center gap-1 bg-[#1e293b]/80 p-1 rounded-xl border border-slate-700/60">
+        <div className="flex items-center gap-1 bg-zinc-900 p-1 rounded-xl border border-zinc-800">
           <button
             onClick={() => setActiveTab('preview')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition ${
-              activeTab === 'preview' ? 'bg-[#111827] text-white shadow border border-slate-700' : 'text-slate-400 hover:text-white'
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer ${
+              activeTab === 'preview' ? 'bg-white text-black font-bold shadow-sm' : 'text-zinc-400 hover:text-white'
             }`}
           >
-            <Eye className="w-3.5 h-3.5 text-indigo-400" />
+            <Eye className="w-3.5 h-3.5" />
             <span>Visual Preview</span>
           </button>
 
           <button
             onClick={() => setActiveTab('code')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition ${
-              activeTab === 'code' ? 'bg-[#111827] text-white shadow border border-slate-700' : 'text-slate-400 hover:text-white'
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer ${
+              activeTab === 'code' ? 'bg-white text-black font-bold shadow-sm' : 'text-zinc-400 hover:text-white'
             }`}
           >
-            <Code className="w-3.5 h-3.5 text-purple-400" />
+            <Code className="w-3.5 h-3.5" />
             <span>HTML Code Editor</span>
           </button>
         </div>
@@ -138,24 +138,24 @@ export const WebsitePreview: React.FC<WebsitePreviewProps> = ({
         <div className="flex items-center gap-2">
           <button
             onClick={onOpenRefine}
-            className="px-3 py-1.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-medium text-xs rounded-xl flex items-center gap-1.5 shadow transition"
+            className="px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-200 hover:text-white font-medium text-xs rounded-xl flex items-center gap-1.5 border border-zinc-800 transition cursor-pointer"
           >
-            <MessageSquare className="w-3.5 h-3.5" />
+            <MessageSquare className="w-3.5 h-3.5 text-white" />
             <span>AI Edit</span>
           </button>
 
           <button
             onClick={onSaveProject}
             disabled={isSaving}
-            className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium text-xs rounded-xl flex items-center gap-1.5 border border-slate-700 transition"
+            className="px-3 py-1.5 bg-white hover:bg-zinc-200 text-black font-bold text-xs rounded-xl flex items-center gap-1.5 shadow transition cursor-pointer disabled:opacity-50"
           >
-            <Save className="w-3.5 h-3.5 text-emerald-400" />
+            <Save className="w-3.5 h-3.5 text-black" />
             <span>{isSaving ? 'Saving...' : 'Save Site'}</span>
           </button>
 
           <button
             onClick={handleDownloadZip}
-            className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl border border-slate-700 transition"
+            className="p-2 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white rounded-xl border border-zinc-800 transition cursor-pointer"
             title="Download ZIP Package"
           >
             <Download className="w-4 h-4" />
@@ -163,15 +163,15 @@ export const WebsitePreview: React.FC<WebsitePreviewProps> = ({
 
           <button
             onClick={handleCopyCode}
-            className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl border border-slate-700 transition"
+            className="p-2 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white rounded-xl border border-zinc-800 transition cursor-pointer"
             title="Copy HTML Code"
           >
-            {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+            {copied ? <Check className="w-4 h-4 text-white" /> : <Copy className="w-4 h-4" />}
           </button>
 
           <button
             onClick={() => setIsFullscreen(true)}
-            className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl border border-slate-700 transition"
+            className="p-2 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white rounded-xl border border-zinc-800 transition cursor-pointer"
             title="Fullscreen Preview"
           >
             <Maximize2 className="w-4 h-4" />
@@ -180,9 +180,9 @@ export const WebsitePreview: React.FC<WebsitePreviewProps> = ({
       </div>
 
       {/* Preview Main Workspace */}
-      <div className="flex-1 bg-[#090D16] relative flex justify-center items-center overflow-auto p-4">
+      <div className="flex-1 bg-black relative flex justify-center items-center overflow-auto p-4">
         {activeTab === 'preview' ? (
-          <div className={`h-full transition-all duration-300 ${viewportWidths[viewport]} bg-white rounded-xl overflow-hidden shadow-2xl relative border border-slate-700`}>
+          <div className={`h-full transition-all duration-300 ${viewportWidths[viewport]} bg-white rounded-xl overflow-hidden shadow-2xl relative border border-zinc-800`}>
             <iframe
               ref={iframeRef}
               srcDoc={editableCode}
@@ -192,24 +192,24 @@ export const WebsitePreview: React.FC<WebsitePreviewProps> = ({
             />
           </div>
         ) : (
-          <div className="w-full h-full flex flex-col bg-[#0F172A] rounded-xl border border-slate-800 overflow-hidden font-mono text-xs text-slate-200">
-            <div className="p-3 bg-[#1e293b] border-b border-slate-800 flex items-center justify-between text-slate-400">
+          <div className="w-full h-full flex flex-col bg-zinc-950 rounded-xl border border-zinc-800 overflow-hidden font-mono text-xs text-zinc-200">
+            <div className="p-3 bg-zinc-900 border-b border-zinc-800 flex items-center justify-between text-zinc-400">
               <span className="flex items-center gap-2">
-                <Code className="w-4 h-4 text-indigo-400" />
+                <Code className="w-4 h-4 text-white" />
                 <span>index.html</span>
               </span>
               <button
                 onClick={() => onUpdateHtml(editableCode)}
-                className="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white font-sans text-xs font-semibold rounded-lg flex items-center gap-1 transition"
+                className="px-3 py-1 bg-white hover:bg-zinc-200 text-black font-sans text-xs font-bold rounded-lg flex items-center gap-1 transition cursor-pointer"
               >
-                <RotateCcw className="w-3 h-3" />
+                <RotateCcw className="w-3 h-3 text-black" />
                 <span>Apply Manual Edits</span>
               </button>
             </div>
             <textarea
               value={editableCode}
               onChange={(e) => setEditableCode(e.target.value)}
-              className="w-full flex-1 p-4 bg-[#090D16] text-emerald-400 font-mono text-xs outline-none resize-none leading-relaxed"
+              className="w-full flex-1 p-4 bg-black text-zinc-100 font-mono text-xs outline-none resize-none leading-relaxed"
               spellCheck={false}
             />
           </div>
@@ -219,14 +219,14 @@ export const WebsitePreview: React.FC<WebsitePreviewProps> = ({
       {/* Fullscreen Overlay */}
       {isFullscreen && (
         <div className="fixed inset-0 z-50 bg-black flex flex-col animate-fadeIn">
-          <div className="p-3 bg-[#111827] border-b border-slate-800 flex items-center justify-between px-6">
+          <div className="p-3 bg-zinc-950 border-b border-zinc-800 flex items-center justify-between px-6">
             <div className="flex items-center gap-2 text-white font-bold text-sm">
-              <Sparkles className="w-4 h-4 text-indigo-400" />
+              <Sparkles className="w-4 h-4 text-white" />
               <span>Fullscreen Preview: {title}</span>
             </div>
             <button
               onClick={() => setIsFullscreen(false)}
-              className="px-4 py-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-semibold transition"
+              className="px-4 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-white border border-zinc-800 rounded-xl text-xs font-semibold transition cursor-pointer"
             >
               Exit Fullscreen
             </button>

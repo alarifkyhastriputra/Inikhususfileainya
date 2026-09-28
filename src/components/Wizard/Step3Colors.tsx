@@ -37,39 +37,39 @@ export const Step3Colors: React.FC<Step3Props> = ({ data, updateData }) => {
     // Intelligent logo color mapping
     updateData({
       colors: {
-        primary: '#4F46E5',
-        secondary: '#1E1B4B',
-        background: '#0F172A',
-        text: '#F8FAFC',
-        button: '#4F46E5',
-        accent: '#06B6D4',
+        primary: '#FFFFFF',
+        secondary: '#18181B',
+        background: '#09090B',
+        text: '#FAFAFA',
+        button: '#FFFFFF',
+        accent: '#D4D4D8',
       },
     });
     setTimeout(() => setLogoColorExtracted(false), 2000);
   };
 
   return (
-    <div className="space-y-6 max-w-3xl mx-auto">
+    <div className="space-y-6 max-w-3xl mx-auto font-['Plus_Jakarta_Sans',sans-serif]">
       <div className="text-center space-y-1.5 mb-6">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold">
-          <Palette className="w-3.5 h-3.5" />
-          Langkah 3: Tentukan Warna Website
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-semibold">
+          <Palette className="w-3.5 h-3.5 text-white" />
+          <span>Langkah 3: Tentukan Warna Website</span>
         </div>
         <h2 className="text-2xl font-bold text-white tracking-tight">Kustomisasi Warna Bebas</h2>
-        <p className="text-xs text-slate-400">
+        <p className="text-xs text-zinc-400">
           Tentukan kombinasi warna sesuai karakter bisnis Anda. Anda dapat mengetik kode HEX atau memilih dengan color picker.
         </p>
       </div>
 
       {/* Gunakan Warna Dari Logo Banner */}
-      <div className="bg-gradient-to-r from-indigo-900/40 via-purple-900/30 to-slate-900 border border-indigo-500/30 p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 shadow-lg">
+      <div className="bg-zinc-950 border border-zinc-800 p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xl">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center text-indigo-400 shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-white shrink-0">
             <Wand2 className="w-5 h-5" />
           </div>
           <div>
             <h4 className="text-sm font-bold text-white">Gunakan Warna Dari Logo</h4>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-zinc-400">
               AI akan merekomendasikan warna harmonis yang cocok dengan logo brand Anda.
             </p>
           </div>
@@ -78,7 +78,7 @@ export const Step3Colors: React.FC<Step3Props> = ({ data, updateData }) => {
         <button
           type="button"
           onClick={handleExtractFromLogo}
-          className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 shadow-md shadow-indigo-600/30"
+          className="px-4 py-2 bg-white hover:bg-zinc-200 text-black rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 shadow cursor-pointer"
         >
           {logoColorExtracted ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
           <span>{logoColorExtracted ? 'Menerapkan...' : 'Ambil Warna Logo'}</span>
@@ -93,12 +93,12 @@ export const Step3Colors: React.FC<Step3Props> = ({ data, updateData }) => {
           return (
             <div
               key={field.key}
-              className="bg-[#111827] border border-slate-800 rounded-2xl p-4 space-y-3 hover:border-slate-700 transition"
+              className="bg-zinc-950 border border-zinc-800 rounded-2xl p-4 space-y-3 hover:border-zinc-700 transition shadow-lg"
             >
               <div className="flex items-start justify-between">
                 <div>
-                  <h4 className="text-xs font-bold text-slate-200">{field.label}</h4>
-                  <p className="text-[11px] text-slate-400 mt-0.5">{field.desc}</p>
+                  <h4 className="text-xs font-bold text-zinc-200">{field.label}</h4>
+                  <p className="text-[11px] text-zinc-400 mt-0.5">{field.desc}</p>
                 </div>
                 {/* Visual swatch circle */}
                 <div
@@ -110,7 +110,7 @@ export const Step3Colors: React.FC<Step3Props> = ({ data, updateData }) => {
               {/* Color Picker + HEX Text Input */}
               <div className="flex items-center gap-2 pt-1">
                 {/* Native Color Picker trigger */}
-                <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-slate-700 cursor-pointer shrink-0">
+                <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-zinc-700 cursor-pointer shrink-0 bg-zinc-900">
                   <input
                     type="color"
                     value={currentColor}
@@ -121,14 +121,14 @@ export const Step3Colors: React.FC<Step3Props> = ({ data, updateData }) => {
 
                 {/* Manual HEX Input */}
                 <div className="flex-1 relative">
-                  <span className="absolute left-3 top-2.5 text-xs font-mono text-slate-500">HEX</span>
+                  <span className="absolute left-3 top-2.5 text-xs font-mono text-zinc-500">HEX</span>
                   <input
                     type="text"
                     value={currentColor}
                     onChange={(e) => handleColorChange(field.key, e.target.value)}
                     placeholder="#000000"
                     maxLength={9}
-                    className="w-full bg-[#1e293b] border border-slate-700 focus:border-indigo-500 text-white font-mono text-xs rounded-xl py-2.5 pl-11 pr-3 outline-none"
+                    className="w-full bg-zinc-900 border border-zinc-800 focus:border-zinc-500 text-white font-mono text-xs rounded-xl py-2.5 pl-11 pr-3 outline-none transition"
                   />
                 </div>
               </div>

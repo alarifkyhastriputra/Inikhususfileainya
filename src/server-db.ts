@@ -188,7 +188,7 @@ export function getDatabase(): DatabaseSchema {
       if (!parsed.settings) {
         parsed.settings = {
           requireApprovalForNewUsers: false,
-          defaultCreditsPerUser: 100,
+          defaultCreditsPerUser: 0,
           aiModel: 'gemini-3.8-flash',
           systemNotice: 'Selamat datang di vimos.ai platform!'
         };
@@ -239,7 +239,7 @@ export function getDatabase(): DatabaseSchema {
     ],
     settings: {
       requireApprovalForNewUsers: false,
-      defaultCreditsPerUser: 100,
+      defaultCreditsPerUser: 0,
       aiModel: 'gemini-3.8-flash',
       systemNotice: 'Selamat datang di vimos.ai platform!'
     }
@@ -256,9 +256,7 @@ export function saveDatabase(data: DatabaseSchema): void {
     if (!fs.existsSync(DATA_DIR)) {
       fs.mkdirSync(DATA_DIR, { recursive: true });
     }
-    const tempFile = DB_FILE + '.tmp';
-    fs.writeFileSync(tempFile, JSON.stringify(data, null, 2), 'utf-8');
-    fs.renameSync(tempFile, DB_FILE);
+    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), 'utf-8');
   } catch (err) {
     console.error('[DB] Error saving database file:', err);
   }

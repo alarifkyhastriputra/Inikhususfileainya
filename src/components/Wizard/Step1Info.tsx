@@ -25,10 +25,10 @@ export const Step1Info: React.FC<Step1Props> = ({ data, updateData }) => {
   const relevantCategories = CATEGORIES_BY_TYPE[data.websiteType] || CATEGORIES_BY_TYPE['Toko Online'];
 
   return (
-    <div className="space-y-6 max-w-2xl mx-auto">
+    <div className="space-y-6 max-w-2xl mx-auto font-['Plus_Jakarta_Sans',sans-serif]">
       <div className="text-center space-y-1.5 mb-6">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold">
-          <Sparkles className="w-3.5 h-3.5" />
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-semibold">
+          <Sparkles className="w-3.5 h-3.5 text-white" />
           <span>Langkah 1: Identitas & Informasi {data.websiteType || 'Website'}</span>
         </div>
         <h2 className="text-2xl font-bold text-white tracking-tight">
@@ -38,7 +38,7 @@ export const Step1Info: React.FC<Step1Props> = ({ data, updateData }) => {
            isCompany ? 'Profil Perusahaan & Bisnis' :
            'Informasi Dasar Toko Online'}
         </h2>
-        <p className="text-xs text-slate-400">
+        <p className="text-xs text-zinc-400">
           {isBlog ? 'Atur nama blog, topik utama, dan profil penulis Anda.' :
            isPortfolio ? 'Tuliskan nama Anda, keahlian utama, dan bio singkat untuk memikat calon klien.' :
            isRestaurant ? 'Atur nama tempat kuliner, konsep hidangan, dan nomor reservasi meja.' :
@@ -47,14 +47,14 @@ export const Step1Info: React.FC<Step1Props> = ({ data, updateData }) => {
         </p>
       </div>
 
-      <div className="space-y-4 bg-[#111827] p-6 rounded-2xl border border-slate-800 shadow-xl">
+      <div className="space-y-4 bg-zinc-950 p-6 rounded-2xl border border-zinc-800 shadow-xl">
         {/* Nama Website / Toko / Blog / Portfolio */}
         <div>
-          <label className="block text-xs font-semibold text-slate-200 mb-1.5 flex items-center gap-1.5">
-            {isBlog ? <BookOpen className="w-4 h-4 text-indigo-400" /> :
-             isPortfolio ? <UserCheck className="w-4 h-4 text-indigo-400" /> :
-             isRestaurant ? <UtensilsCrossed className="w-4 h-4 text-indigo-400" /> :
-             <Building2 className="w-4 h-4 text-indigo-400" />}
+          <label className="block text-xs font-semibold text-zinc-300 mb-1.5 flex items-center gap-1.5">
+            {isBlog ? <BookOpen className="w-4 h-4 text-zinc-400" /> :
+             isPortfolio ? <UserCheck className="w-4 h-4 text-zinc-400" /> :
+             isRestaurant ? <UtensilsCrossed className="w-4 h-4 text-zinc-400" /> :
+             <Building2 className="w-4 h-4 text-zinc-400" />}
             <span>
               {isBlog ? 'Nama Blog / Publikasi *' :
                isPortfolio ? 'Nama Anda / Studio Kreatif *' :
@@ -75,16 +75,16 @@ export const Step1Info: React.FC<Step1Props> = ({ data, updateData }) => {
               isCompany ? 'Contoh: PT Nexus Digital Solusindo' :
               'Contoh: Vimos Apparel Store'
             }
-            className="w-full bg-[#1e293b] border border-slate-700 focus:border-indigo-500 text-white rounded-xl py-3 px-4 text-sm outline-none transition"
+            className="w-full bg-zinc-900 border border-zinc-800 focus:border-zinc-500 text-white rounded-xl py-3 px-4 text-sm outline-none transition"
           />
-          <p className="text-[11px] text-slate-500 mt-1">Nama ini akan menjadi judul utama website Anda.</p>
+          <p className="text-[11px] text-zinc-500 mt-1">Nama ini akan menjadi judul utama website Anda.</p>
         </div>
 
         {/* Khusus Blog: Nama Penulis */}
         {isBlog && (
           <div>
-            <label className="block text-xs font-semibold text-slate-200 mb-1.5 flex items-center gap-1.5">
-              <User className="w-4 h-4 text-purple-400" />
+            <label className="block text-xs font-semibold text-zinc-300 mb-1.5 flex items-center gap-1.5">
+              <User className="w-4 h-4 text-zinc-400" />
               <span>Nama Penulis / Editor Blog</span>
             </label>
             <input
@@ -92,15 +92,15 @@ export const Step1Info: React.FC<Step1Props> = ({ data, updateData }) => {
               value={data.authorName || ''}
               onChange={(e) => updateData({ authorName: e.target.value })}
               placeholder="Contoh: Hasbullah Beloh / Redaksi Vimos"
-              className="w-full bg-[#1e293b] border border-slate-700 focus:border-purple-500 text-white rounded-xl py-3 px-4 text-sm outline-none transition"
+              className="w-full bg-zinc-900 border border-zinc-800 focus:border-zinc-500 text-white rounded-xl py-3 px-4 text-sm outline-none transition"
             />
           </div>
         )}
 
         {/* Deskripsi Singkat */}
         <div>
-          <label className="block text-xs font-semibold text-slate-200 mb-1.5 flex items-center gap-1.5">
-            <FileText className="w-4 h-4 text-indigo-400" />
+          <label className="block text-xs font-semibold text-zinc-300 mb-1.5 flex items-center gap-1.5">
+            <FileText className="w-4 h-4 text-zinc-400" />
             <span>
               {isBlog ? 'Slogan & Topik Pembahasan Blog *' :
                isPortfolio ? 'Bio Singkat & Keahlian Profesional *' :
@@ -121,15 +121,15 @@ export const Step1Info: React.FC<Step1Props> = ({ data, updateData }) => {
               isCompany ? 'Contoh: Perusahaan konsultan transformasi digital yang membantu akselerasi pertumbuhan bisnis dan korporasi.' :
               'Contoh: Toko online streetwear modern dengan bahan katun combed 24s premium dan jahitan rapi untuk kenyamanan harian.'
             }
-            className="w-full bg-[#1e293b] border border-slate-700 focus:border-indigo-500 text-white rounded-xl p-3 text-sm outline-none transition resize-none leading-relaxed"
+            className="w-full bg-zinc-900 border border-zinc-800 focus:border-zinc-500 text-white rounded-xl p-3 text-sm outline-none transition resize-none leading-relaxed"
           />
         </div>
 
         {/* Nama Pemilik / Brand (Kecuali Blog) */}
         {!isBlog && (
           <div>
-            <label className="block text-xs font-semibold text-slate-200 mb-1.5 flex items-center gap-1.5">
-              <User className="w-4 h-4 text-indigo-400" />
+            <label className="block text-xs font-semibold text-zinc-300 mb-1.5 flex items-center gap-1.5">
+              <User className="w-4 h-4 text-zinc-400" />
               <span>
                 {isPortfolio ? 'Gelar / Jabatan Profesional' :
                  isRestaurant ? 'Nama Pemilik / Chef' :
@@ -145,16 +145,16 @@ export const Step1Info: React.FC<Step1Props> = ({ data, updateData }) => {
                 isRestaurant ? 'Contoh: Chef Hasbullah' :
                 'Contoh: Vimos Corp / PT Vimos Digital'
               }
-              className="w-full bg-[#1e293b] border border-slate-700 focus:border-indigo-500 text-white rounded-xl py-3 px-4 text-sm outline-none transition"
+              className="w-full bg-zinc-900 border border-zinc-800 focus:border-zinc-500 text-white rounded-xl py-3 px-4 text-sm outline-none transition"
             />
           </div>
         )}
 
         {/* Nomor WhatsApp / Kontak */}
         <div>
-          <label className="block text-xs font-semibold text-slate-200 mb-1.5 flex items-center justify-between">
+          <label className="block text-xs font-semibold text-zinc-300 mb-1.5 flex items-center justify-between">
             <span className="flex items-center gap-1.5">
-              <PhoneCall className="w-4 h-4 text-emerald-400" />
+              <PhoneCall className="w-4 h-4 text-zinc-300" />
               <span>
                 {isBlog ? 'Nomor WhatsApp Redaksi / Kontak Kerjasama' :
                  isPortfolio ? 'Nomor WhatsApp Tawaran Pekerjaan / Hire Me *' :
@@ -163,7 +163,7 @@ export const Step1Info: React.FC<Step1Props> = ({ data, updateData }) => {
                  'Nomor WhatsApp Toko (Untuk Pemesanan) *'}
               </span>
             </span>
-            <span className="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20 font-medium">
+            <span className="text-[10px] text-zinc-200 bg-zinc-900 px-2 py-0.5 rounded-full border border-zinc-800 font-mono">
               Auto Direct WhatsApp
             </span>
           </label>
@@ -172,9 +172,9 @@ export const Step1Info: React.FC<Step1Props> = ({ data, updateData }) => {
             value={data.whatsappNumber || ''}
             onChange={(e) => updateData({ whatsappNumber: e.target.value })}
             placeholder="Contoh: 081234567890 atau 6281234567890"
-            className="w-full bg-[#1e293b] border border-slate-700 focus:border-emerald-500 text-white rounded-xl py-3 px-4 text-sm outline-none transition font-mono"
+            className="w-full bg-zinc-900 border border-zinc-800 focus:border-zinc-500 text-white rounded-xl py-3 px-4 text-sm outline-none transition font-mono"
           />
-          <p className="text-[11px] text-slate-400 mt-1">
+          <p className="text-[11px] text-zinc-400 mt-1">
             {isBlog ? 'Tombol kontak di blog akan menghubungkan pembaca langsung ke nomor ini.' :
              isPortfolio ? 'Calon klien dapat langsung mengklik tombol "Hire Me" untuk chat WhatsApp dengan Anda!' :
              isRestaurant ? 'Pelanggan dapat memesan meja dan konfirmasi reservasi via WhatsApp.' :
@@ -184,8 +184,8 @@ export const Step1Info: React.FC<Step1Props> = ({ data, updateData }) => {
 
         {/* Kategori Spesifik */}
         <div>
-          <label className="block text-xs font-semibold text-slate-200 mb-2 flex items-center gap-1.5">
-            <Tag className="w-4 h-4 text-indigo-400" />
+          <label className="block text-xs font-semibold text-zinc-300 mb-2 flex items-center gap-1.5">
+            <Tag className="w-4 h-4 text-zinc-400" />
             <span>
               {isBlog ? 'Topik / Niche Utama Blog' :
                isPortfolio ? 'Fokus Bidang Portofolio' :
@@ -200,10 +200,10 @@ export const Step1Info: React.FC<Step1Props> = ({ data, updateData }) => {
                 key={cat}
                 type="button"
                 onClick={() => updateData({ category: cat })}
-                className={`py-2.5 px-3 rounded-xl text-xs font-semibold border transition text-center ${
+                className={`py-2.5 px-3 rounded-xl text-xs font-semibold border transition text-center cursor-pointer ${
                   data.category === cat
-                    ? 'bg-indigo-600 text-white border-indigo-500 shadow-md shadow-indigo-600/30'
-                    : 'bg-[#1e293b] text-slate-300 border-slate-700/80 hover:border-slate-600'
+                    ? 'bg-white text-black border-white shadow-sm font-bold'
+                    : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700 hover:text-white'
                 }`}
               >
                 {cat}

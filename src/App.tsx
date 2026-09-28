@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { UserProfile, GeneratedWebsite } from './types';
-import { auth, onAuthStateChanged, syncUserProfile, signOut, getUserWebsites, getActiveSession, setActiveSession, isAdminEmail } from './lib/firebase';
+import { getUserWebsites, getActiveSession, setActiveSession, isAdminEmail } from './lib/firebase';
 import { AuthModal } from './components/AuthModal';
 import { PendingApprovalView } from './components/PendingApprovalView';
 import { WizardMaster } from './components/Wizard/WizardMaster';
@@ -24,7 +24,7 @@ export default function App() {
   useEffect(() => {
     // 1. Sync local users to server database on app mount
     try {
-      const raw = localStorage.getItem('vimos_local_users');
+      const raw = localStorage.getItem('vimos_local_users_db_v1') || localStorage.getItem('vimos_local_users');
       const localUsers = raw ? JSON.parse(raw) : [];
       if (Array.isArray(localUsers) && localUsers.length > 0) {
         fetch('/api/auth/sync', {
@@ -35,7 +35,8 @@ export default function App() {
       }
     } catch {}
 
-    if (userProfile) {
+    // 2. If session exists, load user's isolated websites and refresh user profile data
+    if (userProfile && userProfile.email) {
       loadUserWebsites(userProfile.email);
 
       // Verify and refresh user profile with online server
@@ -57,47 +58,32 @@ export default function App() {
         })
         .catch(() => {});
     }
-
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser) {
-        const profile = await syncUserProfile(firebaseUser);
-        if (profile) {
-          const effectiveProfile: UserProfile = {
-            ...profile,
-            role: isAdminEmail(profile.email) ? 'admin' : profile.role,
-            status: isAdminEmail(profile.email) ? 'active' : profile.status,
-          };
-          setUserProfile(effectiveProfile);
-          setActiveSession(effectiveProfile);
-          setShowAuthModal(false);
-          loadUserWebsites(effectiveProfile.email);
-        }
-      }
-    });
-
-    return () => unsubscribe();
   }, []);
 
   const loadUserWebsites = async (email: string) => {
-    const sites = await getUserWebsites(email);
-    setWebsites(sites);
+    if (!email) return;
+    try {
+      const sites = await getUserWebsites(email);
+      setWebsites(sites);
+    } catch (err) {
+      console.warn('Failed to load user websites:', err);
+    }
   };
 
   const handleLogout = async () => {
-    try {
-      await signOut(auth);
-    } catch {}
     setActiveSession(null);
     setUserProfile(null);
+    setWebsites([]);
+    setSelectedWebsite(null);
     setShowAuthModal(true);
   };
 
   if (loadingAuth) {
     return (
-      <div className="min-h-screen bg-[#0B0F19] flex items-center justify-center text-white font-['Plus_Jakarta_Sans',sans-serif]">
+      <div className="min-h-screen bg-black flex items-center justify-center text-white font-['Plus_Jakarta_Sans',sans-serif]">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-4 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin" />
-          <div className="text-xs text-slate-400 font-mono">Loading vimos.ai...</div>
+          <div className="w-10 h-10 border-4 border-zinc-800 border-t-white rounded-full animate-spin" />
+          <div className="text-xs text-zinc-400 font-mono">Loading vimos.ai...</div>
         </div>
       </div>
     );
@@ -106,7 +92,7 @@ export default function App() {
   // Initial view is Login / Register if user not authenticated
   if (!userProfile) {
     return (
-      <div className="min-h-screen bg-[#0B0F19] flex items-center justify-center p-4">
+      <div className="min-h-screen bg-black flex items-center justify-center p-4">
         <AuthModal
           isOpen={true}
           onClose={() => {}}
@@ -147,7 +133,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0B0F19]">
+    <div className="min-h-screen bg-black text-zinc-100">
       <WizardMaster
         user={effectiveProfile}
         onUpdateUser={(updated) => {
@@ -175,11 +161,12 @@ export default function App() {
         />
       )}
 
-      {/* My Projects Modal */}
+      {/* My Projects Modal - Strictly user-isolated */}
       <MyProjectsModal
         isOpen={showProjectsModal}
         onClose={() => setShowProjectsModal(false)}
         websites={websites}
+        currentUserEmail={effectiveProfile.email}
         onSelectProject={(site) => {
           setSelectedWebsite({ ...site, html: site.html });
           setShowProjectsModal(false);

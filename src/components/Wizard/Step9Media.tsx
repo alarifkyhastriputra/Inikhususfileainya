@@ -4,24 +4,15 @@ import {
   Image as ImageIcon, 
   Sparkles, 
   Check, 
-  Link2, 
-  Upload, 
   Plus, 
   Trash2, 
   ShoppingBag, 
   BookOpen,
   Briefcase,
   UtensilsCrossed,
-  Layers,
-  RefreshCw,
-  Clock,
-  Tag,
-  ExternalLink,
-  HelpCircle,
-  Sparkle
+  ExternalLink
 } from 'lucide-react';
 import { ImgurImageInput } from '../ImgurImageInput';
-import { normalizeImageUrl } from '../../lib/imageUtils';
 
 interface Step9Props {
   data: WizardData;
@@ -52,8 +43,6 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
   const isRestaurant = websiteType === 'Restaurant';
   const isCompany = websiteType === 'Company Profile' || websiteType === 'Jasa' || websiteType === 'Agency';
 
-  const [showImgurBannerInfo, setShowImgurBannerInfo] = useState(false);
-
   const updateMedia = <K extends keyof typeof media>(key: K, value: typeof media[K]) => {
     updateData({
       media: {
@@ -71,7 +60,7 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
       category: data.category || 'Teknologi',
       readTime: '5 min read',
       excerpt: 'Ringkasan artikel menarik yang memberikan wawasan baru bagi para pembaca setia.',
-      imageUrl: 'https://i.imgur.com/8QzXk5T.jpg',
+      imageUrl: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&auto=format&fit=crop&q=80',
     };
     updateData({ blogPosts: [...blogPosts, newPost] });
   };
@@ -98,7 +87,7 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
       category: data.category || 'UI/UX Design',
       clientYear: 'Klien Terpilih • 2026',
       description: 'Hasil karya desain dan pengembangan dengan perhatian tinggi pada setiap detail estetika dan fungsi.',
-      imageUrl: 'https://i.imgur.com/O6T5kH9.jpg',
+      imageUrl: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800&auto=format&fit=crop&q=80',
     };
     updateData({ portfolioProjects: [...portfolioProjects, newProj] });
   };
@@ -125,7 +114,7 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
       category: 'Makanan Utama',
       price: '35.000',
       description: 'Dimasak dengan bahan pilihan segar dan resep rahasia yang menggugah selera.',
-      imageUrl: 'https://i.imgur.com/n6Y1XkH.jpg',
+      imageUrl: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=800&auto=format&fit=crop&q=80',
     };
     updateData({ restaurantMenu: [...restaurantMenu, newItem] });
   };
@@ -151,7 +140,7 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
       name: `Produk Pilihan #${storeProducts.length + 1}`,
       price: '150.000',
       description: 'Kualitas terbaik, bahan premium dan siap kirim ke seluruh Indonesia.',
-      imageUrl: 'https://i.imgur.com/8Km9tLL.jpg',
+      imageUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop&q=80',
     };
     updateData({ storeProducts: [...storeProducts, newProd] });
   };
@@ -178,7 +167,7 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
       category: 'Konsultasi & Solusi',
       price: 'Mulai Rp 500.000',
       description: 'Solusi profesional terpercaya dengan jaminan mutu dan pengerjaan tepat waktu.',
-      imageUrl: 'https://i.imgur.com/W2yX7tK.jpg',
+      imageUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&auto=format&fit=crop&q=80',
     };
     updateData({ serviceItems: [...(serviceItems || []), newServ] });
   };
@@ -198,11 +187,11 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
   };
 
   return (
-    <div className="space-y-8 max-w-4xl mx-auto">
+    <div className="space-y-8 max-w-4xl mx-auto font-['Plus_Jakarta_Sans',sans-serif]">
       {/* Header */}
       <div className="text-center space-y-1.5 mb-6">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold">
-          <ImageIcon className="w-3.5 h-3.5" />
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-semibold">
+          <ImageIcon className="w-3.5 h-3.5 text-white" />
           <span>
             {isBlog ? 'Langkah 9: Foto Banner & Kelola Artikel Blog' :
              isPortfolio ? 'Langkah 9: Foto & Kelola Proyek Portofolio' :
@@ -212,30 +201,30 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
           </span>
         </div>
         <h2 className="text-2xl font-bold text-white tracking-tight">
-          {isBlog ? 'Banner Blog & Foto Artikel (Dukungan Link Imgur)' :
-           isPortfolio ? 'Banner & Galeri Showcase Karya (Dukungan Link Imgur)' :
-           isRestaurant ? 'Suasana Resto & Daftar Menu (Dukungan Link Imgur)' :
-           isCompany ? 'Banner Korporat & Layanan (Dukungan Link Imgur)' :
-           'Foto Toko & Katalog Produk (Dukungan Link Imgur)'}
+          {isBlog ? 'Banner Blog & Foto Artikel (Dukungan Link Imgur & Direct URL)' :
+           isPortfolio ? 'Banner & Galeri Showcase Karya (Dukungan Link Imgur & Direct URL)' :
+           isRestaurant ? 'Suasana Resto & Daftar Menu (Dukungan Link Imgur & Direct URL)' :
+           isCompany ? 'Banner Korporat & Layanan (Dukungan Link Imgur & Direct URL)' :
+           'Foto Toko & Katalog Produk (Dukungan Link Imgur & Direct URL)'}
         </h2>
-        <p className="text-xs text-slate-400">
-          Upload file langsung atau masukkan <b>Link Imgur</b> (<code className="text-indigo-400 font-mono">https://i.imgur.com/...</code>) pada setiap foto produk dan banner.
+        <p className="text-xs text-zinc-400">
+          Upload file langsung atau masukkan <b>Link Imgur / Direct URL</b> (<code className="text-zinc-200 font-mono">https://i.imgur.com/...</code>) pada setiap foto produk dan banner.
         </p>
       </div>
 
       {/* Imgur Info Callout Card */}
-      <div className="bg-gradient-to-r from-indigo-950/40 via-purple-950/30 to-slate-900 border border-indigo-500/30 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-lg">
+      <div className="bg-zinc-950 border border-zinc-800 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xl">
         <div className="flex items-start gap-3">
-          <div className="w-8 h-8 rounded-xl bg-indigo-500/20 border border-indigo-500/40 text-indigo-400 flex items-center justify-center shrink-0 mt-0.5">
+          <div className="w-8 h-8 rounded-xl bg-zinc-900 border border-zinc-800 text-white flex items-center justify-center shrink-0 mt-0.5">
             <Sparkles className="w-4 h-4" />
           </div>
           <div>
             <h4 className="text-xs font-bold text-white flex items-center gap-2">
-              <span>Mendukung Upload & Edit Foto Via Link Imgur</span>
-              <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] border border-emerald-500/30">Auto Resolve</span>
+              <span>Mendukung Upload Langsung & Link Imgur</span>
+              <span className="px-2 py-0.5 rounded-full bg-zinc-900 text-zinc-200 text-[10px] border border-zinc-700 font-mono">Direct Public Link</span>
             </h4>
-            <p className="text-[11px] text-slate-300 mt-0.5 leading-relaxed">
-              Anda bisa paste link gambar dari <b>Imgur</b> (album/direct link), Unsplash, atau upload dari HP/laptop. Sistem otomatis mengoptimasi ukuran gambar.
+            <p className="text-[11px] text-zinc-400 mt-0.5 leading-relaxed">
+              Foto yang Anda upload otomatis mendapatkan URL publik langsung (<code className="text-zinc-300 font-mono">/uploads/...</code>) dan dapat dibuka dari mana saja. Anda juga bisa menggunakan link Imgur atau Unsplash.
             </p>
           </div>
         </div>
@@ -244,7 +233,7 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
           href="https://imgur.com/upload"
           target="_blank"
           rel="noreferrer"
-          className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 shrink-0 shadow transition"
+          className="px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-200 hover:text-white border border-zinc-800 rounded-xl text-xs font-semibold flex items-center gap-1.5 shrink-0 shadow transition cursor-pointer"
         >
           <ExternalLink className="w-3.5 h-3.5" />
           <span>Buka Imgur.com</span>
@@ -252,9 +241,9 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
       </div>
 
       {/* Bagian 1: Banner Utama (Hero Image) */}
-      <div className="bg-[#111827] p-6 rounded-2xl border border-slate-800 shadow-xl space-y-5">
+      <div className="bg-zinc-950 p-6 rounded-2xl border border-zinc-800 shadow-xl space-y-5">
         <h3 className="text-sm font-bold text-white flex items-center gap-2">
-          <ImageIcon className="w-4 h-4 text-cyan-400" />
+          <ImageIcon className="w-4 h-4 text-zinc-300" />
           <span>
             {isBlog ? 'Foto Banner Utama Blog (Featured Hero)' :
              isPortfolio ? 'Foto Profil / Banner Portofolio' :
@@ -266,15 +255,15 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
         <ImgurImageInput
           value={media?.heroImageUrl || ''}
           onChange={(url) => updateMedia('heroImageUrl', url)}
-          label="Link Foto Banner (Imgur / URL Langsung):"
+          label="Link Foto Banner (Imgur / Upload Langsung):"
           placeholder="https://i.imgur.com/abc1234.jpg atau upload..."
           aspectRatio="banner"
           itemTypeLabel="Banner Utama"
         />
 
         {/* Pilihan Posisi Gambar */}
-        <div className="pt-3 border-t border-slate-800">
-          <label className="block text-xs font-semibold text-slate-300 mb-2">Tata Letak Posisi Gambar Banner:</label>
+        <div className="pt-3 border-t border-zinc-800">
+          <label className="block text-xs font-semibold text-zinc-300 mb-2">Tata Letak Posisi Gambar Banner:</label>
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
             {positionOptions.map((pos) => {
               const isSelected = media.imagePosition === pos.id;
@@ -285,8 +274,8 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
                   onClick={() => updateMedia('imagePosition', pos.id as any)}
                   className={`p-2.5 rounded-xl border text-center transition cursor-pointer ${
                     isSelected
-                      ? 'bg-indigo-600/30 border-indigo-500 text-white font-bold'
-                      : 'bg-[#182238] border-slate-700/80 text-slate-400 hover:text-white'
+                      ? 'bg-white text-black border-white font-bold shadow-md'
+                      : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700'
                   }`}
                 >
                   <span className="text-xs block">{pos.label}</span>
@@ -301,14 +290,14 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
 
       {/* A. KHUSUS BLOG: KELOLA ARTIKEL */}
       {isBlog && (
-        <div className="bg-[#111827] p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+        <div className="bg-zinc-950 p-6 rounded-2xl border border-zinc-800 shadow-xl space-y-4">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <BookOpen className="w-4 h-4 text-purple-400" />
+                <BookOpen className="w-4 h-4 text-zinc-300" />
                 <span>Daftar Artikel & Postingan Blog ({blogPosts.length} Artikel)</span>
               </h3>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-zinc-400 mt-0.5">
                 Setiap artikel dapat diedit fotonya dengan link Imgur atau upload file.
               </p>
             </div>
@@ -316,7 +305,7 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
             <button
               type="button"
               onClick={handleAddBlogPost}
-              className="px-3.5 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow cursor-pointer"
+              className="px-3.5 py-2 bg-white hover:bg-zinc-200 text-black rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow cursor-pointer"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>+ Tambah Artikel</span>
@@ -325,13 +314,13 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {blogPosts.map((post, idx) => (
-              <div key={post.id} className="bg-[#182238] border border-slate-700/80 rounded-2xl p-4 space-y-3 relative group">
+              <div key={post.id} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 space-y-3 relative group">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-purple-400">Artikel #{idx + 1}</span>
+                  <span className="text-xs font-bold text-zinc-200">Artikel #{idx + 1}</span>
                   <button
                     type="button"
                     onClick={() => handleDeleteBlogPost(post.id)}
-                    className="p-1 text-slate-400 hover:text-rose-400 transition"
+                    className="p-1 text-zinc-400 hover:text-white transition cursor-pointer"
                     title="Hapus Artikel"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
@@ -352,7 +341,7 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
                     value={post.title}
                     onChange={(e) => handleUpdateBlogPost(post.id, { title: e.target.value })}
                     placeholder="Judul Artikel Blog"
-                    className="w-full bg-[#0B0F19] border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold outline-none"
+                    className="w-full bg-zinc-950 border border-zinc-800 focus:border-zinc-500 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold outline-none"
                   />
                   <div className="flex items-center gap-2">
                     <input
@@ -360,14 +349,14 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
                       value={post.category}
                       onChange={(e) => handleUpdateBlogPost(post.id, { category: e.target.value })}
                       placeholder="Topik / Kategori"
-                      className="w-1/2 bg-[#0B0F19] border border-slate-700 rounded-lg px-2 py-1 text-[11px] text-purple-300 outline-none"
+                      className="w-1/2 bg-zinc-950 border border-zinc-800 focus:border-zinc-500 rounded-lg px-2 py-1 text-[11px] text-zinc-300 outline-none"
                     />
                     <input
                       type="text"
                       value={post.readTime}
                       onChange={(e) => handleUpdateBlogPost(post.id, { readTime: e.target.value })}
                       placeholder="Waktu Baca (misal: 4 min)"
-                      className="w-1/2 bg-[#0B0F19] border border-slate-700 rounded-lg px-2 py-1 text-[11px] text-slate-300 outline-none font-mono"
+                      className="w-1/2 bg-zinc-950 border border-zinc-800 focus:border-zinc-500 rounded-lg px-2 py-1 text-[11px] text-zinc-300 outline-none font-mono"
                     />
                   </div>
                   <textarea
@@ -375,7 +364,7 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
                     value={post.excerpt}
                     onChange={(e) => handleUpdateBlogPost(post.id, { excerpt: e.target.value })}
                     placeholder="Cuplikan / ringkasan isi artikel..."
-                    className="w-full bg-[#0B0F19] border border-slate-700 rounded-lg px-2.5 py-1.5 text-[11px] text-slate-300 outline-none leading-relaxed"
+                    className="w-full bg-zinc-950 border border-zinc-800 focus:border-zinc-500 rounded-lg px-2.5 py-1.5 text-[11px] text-zinc-300 outline-none leading-relaxed resize-none"
                   />
                 </div>
               </div>
@@ -386,14 +375,14 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
 
       {/* B. KHUSUS PORTFOLIO: KELOLA PROYEK */}
       {isPortfolio && (
-        <div className="bg-[#111827] p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+        <div className="bg-zinc-950 p-6 rounded-2xl border border-zinc-800 shadow-xl space-y-4">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <Briefcase className="w-4 h-4 text-cyan-400" />
+                <Briefcase className="w-4 h-4 text-zinc-300" />
                 <span>Daftar Proyek Portofolio ({portfolioProjects.length} Proyek)</span>
               </h3>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-zinc-400 mt-0.5">
                 Showcase karya Anda kepada calon klien dengan link foto Imgur atau upload langsung.
               </p>
             </div>
@@ -401,7 +390,7 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
             <button
               type="button"
               onClick={handleAddProject}
-              className="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow cursor-pointer"
+              className="px-3.5 py-2 bg-white hover:bg-zinc-200 text-black rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow cursor-pointer"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>+ Tambah Proyek</span>
@@ -410,13 +399,13 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {portfolioProjects.map((proj, idx) => (
-              <div key={proj.id} className="bg-[#182238] border border-slate-700/80 rounded-2xl p-4 space-y-3 relative group">
+              <div key={proj.id} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 space-y-3 relative group">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-cyan-400">Proyek #{idx + 1}</span>
+                  <span className="text-xs font-bold text-zinc-200">Proyek #{idx + 1}</span>
                   <button
                     type="button"
                     onClick={() => handleDeleteProject(proj.id)}
-                    className="p-1 text-slate-400 hover:text-rose-400 transition"
+                    className="p-1 text-zinc-400 hover:text-white transition cursor-pointer"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
@@ -436,7 +425,7 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
                     value={proj.title}
                     onChange={(e) => handleUpdateProject(proj.id, { title: e.target.value })}
                     placeholder="Judul Proyek / Studi Kasus"
-                    className="w-full bg-[#0B0F19] border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold outline-none"
+                    className="w-full bg-zinc-950 border border-zinc-800 focus:border-zinc-500 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold outline-none"
                   />
                   <div className="flex items-center gap-2">
                     <input
@@ -444,22 +433,22 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
                       value={proj.category}
                       onChange={(e) => handleUpdateProject(proj.id, { category: e.target.value })}
                       placeholder="Kategori Proyek"
-                      className="w-1/2 bg-[#0B0F19] border border-slate-700 rounded-lg px-2 py-1 text-[11px] text-cyan-300 outline-none"
+                      className="w-1/2 bg-zinc-950 border border-zinc-800 focus:border-zinc-500 rounded-lg px-2 py-1 text-[11px] text-zinc-300 outline-none"
                     />
                     <input
                       type="text"
-                      value={proj.clientYear || ''}
+                      value={proj.clientYear}
                       onChange={(e) => handleUpdateProject(proj.id, { clientYear: e.target.value })}
                       placeholder="Klien / Tahun"
-                      className="w-1/2 bg-[#0B0F19] border border-slate-700 rounded-lg px-2 py-1 text-[11px] text-slate-300 outline-none font-mono"
+                      className="w-1/2 bg-zinc-950 border border-zinc-800 focus:border-zinc-500 rounded-lg px-2 py-1 text-[11px] text-zinc-400 outline-none font-mono"
                     />
                   </div>
                   <textarea
                     rows={2}
                     value={proj.description}
                     onChange={(e) => handleUpdateProject(proj.id, { description: e.target.value })}
-                    placeholder="Deskripsi singkat proyek..."
-                    className="w-full bg-[#0B0F19] border border-slate-700 rounded-lg px-2.5 py-1.5 text-[11px] text-slate-300 outline-none leading-relaxed"
+                    placeholder="Deskripsi singkat hasil proyek..."
+                    className="w-full bg-zinc-950 border border-zinc-800 focus:border-zinc-500 rounded-lg px-2.5 py-1.5 text-[11px] text-zinc-300 outline-none leading-relaxed resize-none"
                   />
                 </div>
               </div>
@@ -468,24 +457,24 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
         </div>
       )}
 
-      {/* C. KHUSUS RESTORAN & KAFE: KELOLA MENU */}
+      {/* C. KHUSUS RESTAURANT: KELOLA MENU */}
       {isRestaurant && (
-        <div className="bg-[#111827] p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+        <div className="bg-zinc-950 p-6 rounded-2xl border border-zinc-800 shadow-xl space-y-4">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <UtensilsCrossed className="w-4 h-4 text-amber-400" />
-                <span>Daftar Menu Hidangan & Minuman ({restaurantMenu.length} Menu)</span>
+                <UtensilsCrossed className="w-4 h-4 text-zinc-300" />
+                <span>Daftar Menu Hidangan Resto & Kafe ({restaurantMenu.length} Menu)</span>
               </h3>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Upload foto hidangan atau gunakan link Imgur langsung.
+              <p className="text-xs text-zinc-400 mt-0.5">
+                Kelola menu makanan, minuman, dan foto lezat untuk pengunjung.
               </p>
             </div>
 
             <button
               type="button"
               onClick={handleAddMenuItem}
-              className="px-3.5 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow cursor-pointer"
+              className="px-3.5 py-2 bg-white hover:bg-zinc-200 text-black rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow cursor-pointer"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>+ Tambah Menu</span>
@@ -493,23 +482,23 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {restaurantMenu.map((item, idx) => (
-              <div key={item.id} className="bg-[#182238] border border-slate-700/80 rounded-2xl p-4 space-y-3 relative group">
+            {restaurantMenu.map((menu, idx) => (
+              <div key={menu.id} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 space-y-3 relative group">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-amber-400">Menu #{idx + 1}</span>
+                  <span className="text-xs font-bold text-zinc-200">Menu #{idx + 1}</span>
                   <button
                     type="button"
-                    onClick={() => handleDeleteMenuItem(item.id)}
-                    className="p-1 text-slate-400 hover:text-rose-400 transition"
+                    onClick={() => handleDeleteMenuItem(menu.id)}
+                    className="p-1 text-zinc-400 hover:text-white transition cursor-pointer"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
 
                 <ImgurImageInput
-                  value={item.imageUrl}
-                  onChange={(url) => handleUpdateMenuItem(item.id, { imageUrl: url })}
-                  placeholder="Link Imgur foto hidangan..."
+                  value={menu.imageUrl}
+                  onChange={(url) => handleUpdateMenuItem(menu.id, { imageUrl: url })}
+                  placeholder="Link Imgur foto makanan/minuman..."
                   aspectRatio="square"
                   itemTypeLabel={`Menu #${idx + 1}`}
                 />
@@ -517,41 +506,36 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
                 <div className="space-y-2">
                   <input
                     type="text"
-                    value={item.name}
-                    onChange={(e) => handleUpdateMenuItem(item.id, { name: e.target.value })}
-                    placeholder="Nama Menu Makanan/Minuman"
-                    className="w-full bg-[#0B0F19] border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold outline-none"
+                    value={menu.name}
+                    onChange={(e) => handleUpdateMenuItem(menu.id, { name: e.target.value })}
+                    placeholder="Nama Menu Hidangan"
+                    className="w-full bg-zinc-950 border border-zinc-800 focus:border-zinc-500 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold outline-none"
                   />
                   <div className="flex items-center gap-2">
-                    <select
-                      value={item.category}
-                      onChange={(e) => handleUpdateMenuItem(item.id, { category: e.target.value })}
-                      className="w-1/2 bg-[#0B0F19] border border-slate-700 rounded-lg px-2 py-1 text-[11px] text-amber-300 outline-none"
-                    >
-                      <option value="Makanan Utama">Makanan Utama</option>
-                      <option value="Minuman Kopi">Minuman Kopi</option>
-                      <option value="Minuman Segar">Minuman Segar</option>
-                      <option value="Pastry / Camilan">Pastry / Camilan</option>
-                      <option value="Dessert">Dessert</option>
-                    </select>
-
-                    <div className="w-1/2 flex items-center gap-1">
-                      <span className="text-xs text-slate-400 font-bold">Rp</span>
+                    <input
+                      type="text"
+                      value={menu.category}
+                      onChange={(e) => handleUpdateMenuItem(menu.id, { category: e.target.value })}
+                      placeholder="Kategori (Kopi / Makanan)"
+                      className="w-1/2 bg-zinc-950 border border-zinc-800 focus:border-zinc-500 rounded-lg px-2 py-1 text-[11px] text-zinc-300 outline-none"
+                    />
+                    <div className="w-1/2 relative">
+                      <span className="absolute left-2.5 top-1 text-[11px] text-zinc-500">Rp</span>
                       <input
                         type="text"
-                        value={item.price}
-                        onChange={(e) => handleUpdateMenuItem(item.id, { price: e.target.value })}
-                        placeholder="Harga"
-                        className="w-full bg-[#0B0F19] border border-slate-700 rounded-lg px-2 py-1 text-xs text-emerald-400 font-bold outline-none font-mono"
+                        value={menu.price}
+                        onChange={(e) => handleUpdateMenuItem(menu.id, { price: e.target.value })}
+                        placeholder="Harga (misal: 25.000)"
+                        className="w-full bg-zinc-950 border border-zinc-800 focus:border-zinc-500 rounded-lg pl-8 pr-2 py-1 text-[11px] text-white outline-none font-mono font-bold"
                       />
                     </div>
                   </div>
-                  <input
-                    type="text"
-                    value={item.description}
-                    onChange={(e) => handleUpdateMenuItem(item.id, { description: e.target.value })}
-                    placeholder="Deskripsi cita rasa..."
-                    className="w-full bg-[#0B0F19] border border-slate-700 rounded-lg px-2.5 py-1.5 text-[11px] text-slate-300 outline-none"
+                  <textarea
+                    rows={2}
+                    value={menu.description}
+                    onChange={(e) => handleUpdateMenuItem(menu.id, { description: e.target.value })}
+                    placeholder="Komposisi / deskripsi rasa lezat..."
+                    className="w-full bg-zinc-950 border border-zinc-800 focus:border-zinc-500 rounded-lg px-2.5 py-1.5 text-[11px] text-zinc-300 outline-none leading-relaxed resize-none"
                   />
                 </div>
               </div>
@@ -560,24 +544,100 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
         </div>
       )}
 
-      {/* D. KHUSUS TOKO ONLINE (DEFAULT): KELOLA PRODUK */}
-      {!isBlog && !isPortfolio && !isRestaurant && (
-        <div className="bg-[#111827] p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+      {/* D. KHUSUS PERUSAHAAN / JASA: KELOLA LAYANAN */}
+      {isCompany && (
+        <div className="bg-zinc-950 p-6 rounded-2xl border border-zinc-800 shadow-xl space-y-4">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <ShoppingBag className="w-4 h-4 text-emerald-400" />
-                <span>Katalog Produk Toko Online ({storeProducts.length} Produk)</span>
+                <Briefcase className="w-4 h-4 text-zinc-300" />
+                <span>Paket Layanan & Solusi Bisnis ({(serviceItems || []).length} Layanan)</span>
               </h3>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Setiap foto produk dapat diedit dan diunggah menggunakan link <b>Imgur</b> atau upload gambar lokal.
+              <p className="text-xs text-zinc-400 mt-0.5">
+                Tampilkan penawaran profesional dan tarif layanan perusahaan Anda.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleAddService}
+              className="px-3.5 py-2 bg-white hover:bg-zinc-200 text-black rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow cursor-pointer"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>+ Tambah Layanan</span>
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {(serviceItems || []).map((serv, idx) => (
+              <div key={serv.id} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 space-y-3 relative group">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-zinc-200">Layanan #{idx + 1}</span>
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteService(serv.id)}
+                    className="p-1 text-zinc-400 hover:text-white transition cursor-pointer"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+
+                <div className="space-y-2">
+                  <input
+                    type="text"
+                    value={serv.name}
+                    onChange={(e) => handleUpdateService(serv.id, { name: e.target.value })}
+                    placeholder="Nama Layanan / Solusi"
+                    className="w-full bg-zinc-950 border border-zinc-800 focus:border-zinc-500 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold outline-none"
+                  />
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      value={serv.category}
+                      onChange={(e) => handleUpdateService(serv.id, { category: e.target.value })}
+                      placeholder="Bidang / Kategori"
+                      className="w-1/2 bg-zinc-950 border border-zinc-800 focus:border-zinc-500 rounded-lg px-2 py-1 text-[11px] text-zinc-300 outline-none"
+                    />
+                    <input
+                      type="text"
+                      value={serv.price}
+                      onChange={(e) => handleUpdateService(serv.id, { price: e.target.value })}
+                      placeholder="Estimasi Harga"
+                      className="w-1/2 bg-zinc-950 border border-zinc-800 focus:border-zinc-500 rounded-lg px-2 py-1 text-[11px] text-white outline-none font-mono font-bold"
+                    />
+                  </div>
+                  <textarea
+                    rows={2}
+                    value={serv.description}
+                    onChange={(e) => handleUpdateService(serv.id, { description: e.target.value })}
+                    placeholder="Rincian lingkup kerja layanan..."
+                    className="w-full bg-zinc-950 border border-zinc-800 focus:border-zinc-500 rounded-lg px-2.5 py-1.5 text-[11px] text-zinc-300 outline-none leading-relaxed resize-none"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* E. DEFAULT: TOKO ONLINE & UMUM */}
+      {!isBlog && !isPortfolio && !isRestaurant && !isCompany && (
+        <div className="bg-zinc-950 p-6 rounded-2xl border border-zinc-800 shadow-xl space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <ShoppingBag className="w-4 h-4 text-zinc-300" />
+                <span>Katalog Produk Toko ({storeProducts.length} Produk)</span>
+              </h3>
+              <p className="text-xs text-zinc-400 mt-0.5">
+                Setiap produk dapat diganti fotonya dengan link Imgur, upload gambar, atau link langsung.
               </p>
             </div>
 
             <button
               type="button"
               onClick={handleAddProduct}
-              className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow cursor-pointer"
+              className="px-3.5 py-2 bg-white hover:bg-zinc-200 text-black rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow cursor-pointer"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>+ Tambah Produk</span>
@@ -585,60 +645,52 @@ export const Step9Media: React.FC<Step9Props> = ({ data, updateData }) => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {storeProducts.map((prod, idx) => (
-              <div key={prod.id} className="bg-[#182238] border border-slate-700/80 rounded-2xl p-4 space-y-3 relative group">
+            {storeProducts.map((product, idx) => (
+              <div key={product.id} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 space-y-3 relative group">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-emerald-400">Produk #{idx + 1}</span>
-                    {prod.imageUrl?.includes('imgur.com') && (
-                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">
-                        Imgur
-                      </span>
-                    )}
-                  </div>
+                  <span className="text-xs font-bold text-zinc-200">Produk #{idx + 1}</span>
                   <button
                     type="button"
-                    onClick={() => handleDeleteProduct(prod.id)}
-                    className="p-1 text-slate-400 hover:text-rose-400 transition"
+                    onClick={() => handleDeleteProduct(product.id)}
+                    className="p-1 text-zinc-400 hover:text-white transition cursor-pointer"
                     title="Hapus Produk"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
 
-                {/* Imgur Image Input Component */}
                 <ImgurImageInput
-                  value={prod.imageUrl}
-                  onChange={(url) => handleUpdateProduct(prod.id, { imageUrl: url })}
-                  placeholder="https://i.imgur.com/... atau paste link foto"
+                  value={product.imageUrl}
+                  onChange={(url) => handleUpdateProduct(product.id, { imageUrl: url })}
+                  placeholder="Link Imgur foto produk..."
                   aspectRatio="square"
-                  itemTypeLabel={`Foto Produk #${idx + 1}`}
+                  itemTypeLabel={`Produk #${idx + 1}`}
                 />
 
                 <div className="space-y-2">
                   <input
                     type="text"
-                    value={prod.name}
-                    onChange={(e) => handleUpdateProduct(prod.id, { name: e.target.value })}
+                    value={product.name}
+                    onChange={(e) => handleUpdateProduct(product.id, { name: e.target.value })}
                     placeholder="Nama Produk"
-                    className="w-full bg-[#0B0F19] border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold outline-none"
+                    className="w-full bg-zinc-950 border border-zinc-800 focus:border-zinc-500 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold outline-none"
                   />
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-xs text-slate-400 font-bold">Rp</span>
+                  <div className="relative">
+                    <span className="absolute left-2.5 top-1.5 text-xs text-zinc-500">Rp</span>
                     <input
                       type="text"
-                      value={prod.price}
-                      onChange={(e) => handleUpdateProduct(prod.id, { price: e.target.value })}
+                      value={product.price}
+                      onChange={(e) => handleUpdateProduct(product.id, { price: e.target.value })}
                       placeholder="Harga (misal: 150.000)"
-                      className="flex-1 bg-[#0B0F19] border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-emerald-400 font-bold outline-none font-mono"
+                      className="w-full bg-zinc-950 border border-zinc-800 focus:border-zinc-500 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white outline-none font-mono font-bold"
                     />
                   </div>
-                  <input
-                    type="text"
-                    value={prod.description}
-                    onChange={(e) => handleUpdateProduct(prod.id, { description: e.target.value })}
+                  <textarea
+                    rows={2}
+                    value={product.description}
+                    onChange={(e) => handleUpdateProduct(product.id, { description: e.target.value })}
                     placeholder="Deskripsi singkat produk..."
-                    className="w-full bg-[#0B0F19] border border-slate-700 rounded-lg px-2.5 py-1.5 text-[11px] text-slate-300 outline-none"
+                    className="w-full bg-zinc-950 border border-zinc-800 focus:border-zinc-500 rounded-lg px-2.5 py-1.5 text-[11px] text-zinc-300 outline-none leading-relaxed resize-none"
                   />
                 </div>
               </div>

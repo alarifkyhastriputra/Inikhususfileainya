@@ -27,8 +27,65 @@ if (!fs.existsSync(uploadsDir)) {
 }
 app.use('/uploads', express.static(uploadsDir));
 
-// Image Upload Endpoint
-app.post('/api/upload-image', (req: Request, res: Response) => {
+// Imgur Client ID pool for robust public image hosting
+const IMGUR_CLIENT_IDS = [
+  '546c25a59c58ad7',
+  'e9998ea322e70bf',
+  '28eb2add3a7c644',
+  'c942858b975ec0b',
+  'b025d57b324cb89'
+];
+
+export async function uploadToPublicImgur(rawBase64OrBuffer: string | Buffer): Promise<string | null> {
+  let cleanBase64 = '';
+  if (Buffer.isBuffer(rawBase64OrBuffer)) {
+    cleanBase64 = rawBase64OrBuffer.toString('base64');
+  } else if (typeof rawBase64OrBuffer === 'string') {
+    cleanBase64 = rawBase64OrBuffer.replace(/^data:([A-Za-z-+\/]+);base64,/, '').trim();
+  }
+
+  if (!cleanBase64) return null;
+
+  for (const clientId of IMGUR_CLIENT_IDS) {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 9000);
+
+      const response = await fetch('https://api.imgur.com/3/image', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Client-ID ${clientId}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          image: cleanBase64,
+          type: 'base64'
+        }),
+        signal: controller.signal
+      });
+
+      clearTimeout(timeoutId);
+
+      if (response.ok) {
+        const json = await response.json() as any;
+        if (json && json.success && json.data && json.data.link) {
+          let link = String(json.data.link);
+          if (link.startsWith('http://')) link = link.replace('http://', 'https://');
+          console.log(`[vimos.ai] Successfully uploaded image to Imgur CDN: ${link}`);
+          return link;
+        }
+      }
+    } catch (e: any) {
+      console.warn(`[vimos.ai] Imgur upload with client ID ${clientId} failed:`, e?.message || e);
+    }
+  }
+
+  return null;
+}
+
+// Image Upload Endpoint - Returns real public direct link (Imgur CDN) viewable on any website
+app.post('/api/upload-image', async (req: Request, res: Response) => {
   try {
     const { imageBase64 } = req.body;
     if (!imageBase64) {
@@ -39,6 +96,7 @@ app.post('/api/upload-image', (req: Request, res: Response) => {
     const matches = imageBase64.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
     let ext = 'jpg';
     let dataBuffer: Buffer;
+    let cleanBase64 = imageBase64;
 
     if (matches && matches.length === 3) {
       const mime = matches[1];
@@ -47,18 +105,47 @@ app.post('/api/upload-image', (req: Request, res: Response) => {
       else if (mime.includes('gif')) ext = 'gif';
       else if (mime.includes('svg')) ext = 'svg';
       dataBuffer = Buffer.from(matches[2], 'base64');
+      cleanBase64 = matches[2];
     } else {
       dataBuffer = Buffer.from(imageBase64, 'base64');
+      cleanBase64 = imageBase64.replace(/^data:[^;]+;base64,/, '');
     }
 
+    // 1. Primary: Upload to Imgur for a real, permanent, globally accessible direct link
+    const imgurUrl = await uploadToPublicImgur(cleanBase64);
+
+    // 2. Redundancy: save local copy on disk
     const safeFilename = `img_${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${ext}`;
     const filePath = path.join(uploadsDir, safeFilename);
     fs.writeFileSync(filePath, dataBuffer);
 
-    // Return the clean public URL
-    const publicUrl = `/uploads/${safeFilename}`;
-    console.log(`[vimos.ai] Uploaded image saved: ${publicUrl} (${dataBuffer.length} bytes)`);
-    res.json({ success: true, url: publicUrl });
+    if (imgurUrl) {
+      console.log(`[vimos.ai] Uploaded image successfully to Imgur: ${imgurUrl}`);
+      res.json({
+        success: true,
+        url: imgurUrl,
+        directUrl: imgurUrl,
+        provider: 'imgur',
+        isPublic: true,
+        message: 'Gambar berhasil diupload ke server CDN publik (Imgur). Link ini asli dan dapat dilihat di web manapun!'
+      });
+      return;
+    }
+
+    // 3. Fallback: Return absolute URL so it works in external contexts
+    const host = req.get('host') || 'localhost:3000';
+    const protocol = req.protocol === 'https' || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
+    const absoluteServerUrl = `${protocol}://${host}/uploads/${safeFilename}`;
+    console.log(`[vimos.ai] Uploaded image saved locally with absolute URL: ${absoluteServerUrl}`);
+
+    res.json({
+      success: true,
+      url: absoluteServerUrl,
+      directUrl: absoluteServerUrl,
+      provider: 'server',
+      isPublic: true,
+      message: 'Gambar tersimpan dengan link penuh.'
+    });
   } catch (err: any) {
     console.error('Image upload error:', err);
     res.status(500).json({ error: err?.message || 'Failed to upload image' });
@@ -236,11 +323,55 @@ app.post('/api/auth/login', (req: Request, res: Response) => {
   }
 });
 
-// 2a. Online Register Endpoint (Restricted to Admin Only)
-app.post('/api/auth/register', (_req: Request, res: Response) => {
-  res.status(403).json({
-    error: 'Pendaftaran akun publik tidak tersedia. Akun baru hanya dapat didaftarkan oleh Administrator melalui Admin Dashboard.'
-  });
+// 2a. Online Register Endpoint
+app.post('/api/auth/register', (req: Request, res: Response) => {
+  try {
+    const { email, password, displayName } = req.body;
+    if (!email || !password) {
+      res.status(400).json({ error: 'Email dan password wajib diisi!' });
+      return;
+    }
+
+    const normEmail = String(email).trim().toLowerCase();
+    const cleanPassword = String(password).trim();
+    if (cleanPassword.length < 4) {
+      res.status(400).json({ error: 'Password minimal 4 karakter!' });
+      return;
+    }
+
+    const dbData = getDatabase();
+    const existing = dbData.users.find(u => u.email.trim().toLowerCase() === normEmail);
+    if (existing) {
+      res.status(400).json({ error: `Email "${normEmail}" sudah terdaftar. Silakan langsung login.` });
+      return;
+    }
+
+    const isSuper = isSuperAdminEmail(normEmail);
+    const requireApproval = dbData.settings?.requireApprovalForNewUsers ?? false;
+    const defaultCredits = dbData.settings?.defaultCreditsPerUser ?? 0;
+
+    const newUser: UserRecord = {
+      uid: `usr_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+      serialCode: isSuper ? `VMS-000${dbData.users.length + 1}` : generateSerialCode(dbData.users),
+      email: normEmail,
+      password: cleanPassword,
+      displayName: displayName?.trim() || normEmail.split('@')[0],
+      role: isSuper ? 'admin' : 'member',
+      status: isSuper ? 'active' : (requireApproval ? 'pending' : 'active'),
+      createdAt: new Date().toISOString(),
+      credits: isSuper ? 999999 : 0, // Explicitly 0 credits upon registration
+      lastLogin: new Date().toISOString()
+    };
+
+    dbData.users.unshift(newUser);
+    saveDatabase(dbData);
+
+    console.log(`[Online Auth] New user registered: ${normEmail} (${newUser.serialCode}, status: ${newUser.status})`);
+    res.json({ success: true, user: newUser });
+  } catch (err: any) {
+    console.error('[Online Auth] Register error:', err);
+    res.status(500).json({ error: err?.message || 'Gagal mendaftarkan akun' });
+  }
 });
 
 // 2b. Direct Reset Password
@@ -293,7 +424,7 @@ app.post('/api/auth/sync', (req: Request, res: Response) => {
             role: incoming.role || (isSuperAdminEmail(norm) ? 'admin' : 'member'),
             status: incoming.status || 'active',
             createdAt: incoming.createdAt || new Date().toISOString(),
-            credits: incoming.credits ?? (isSuperAdminEmail(norm) ? 999999 : 50),
+            credits: incoming.credits ?? (isSuperAdminEmail(norm) ? 999999 : 0),
             lastLogin: incoming.lastLogin || new Date().toISOString()
           });
           added++;
@@ -360,7 +491,7 @@ app.post('/api/users', (req: Request, res: Response) => {
         role: isSuper ? 'admin' : (role || 'member'),
         status: isSuper ? 'active' : (status || 'active'),
         createdAt: new Date().toISOString(),
-        credits: credits !== undefined ? Number(credits) : 100,
+        credits: credits !== undefined ? Number(credits) : 0,
         lastLogin: new Date().toISOString()
       };
       dbData.users.unshift(user);
@@ -440,16 +571,16 @@ app.delete('/api/users/:uid', (req: Request, res: Response) => {
 // 7c. Quick Top-Up Credits by Serial Code, Email, or UID (Admin only)
 app.post('/api/users/add-credits', (req: Request, res: Response) => {
   try {
-    const { identifier, amount } = req.body;
+    const { identifier, amount, mode = 'add' } = req.body;
     if (!identifier || amount === undefined) {
       res.status(400).json({ error: 'Kode Seri / Email / ID akun dan jumlah kredit wajib diisi' });
       return;
     }
 
     const cleanId = String(identifier).trim().toLowerCase();
-    const addAmount = Number(amount);
-    if (isNaN(addAmount) || addAmount <= 0) {
-      res.status(400).json({ error: 'Jumlah kredit harus berupa angka positif' });
+    const val = Number(amount);
+    if (isNaN(val) || (mode === 'add' && val <= 0) || (mode === 'set' && val < 0)) {
+      res.status(400).json({ error: 'Jumlah kredit harus berupa angka yang valid' });
       return;
     }
 
@@ -474,15 +605,21 @@ app.post('/api/users/add-credits', (req: Request, res: Response) => {
       return;
     }
 
-    user.credits = (user.credits || 0) + addAmount;
+    if (mode === 'set') {
+      user.credits = val;
+    } else {
+      user.credits = (user.credits || 0) + val;
+    }
     saveDatabase(dbData);
 
-    console.log(`[Admin Quick Top-Up] Added ${addAmount} credits to ${user.email} (${user.serialCode}). New balance: ${user.credits}`);
+    console.log(`[Admin Quick Top-Up] ${mode === 'set' ? 'Set' : 'Added'} ${val} credits to ${user.email} (${user.serialCode}). New balance: ${user.credits}`);
     res.json({ 
       success: true, 
       newCredits: user.credits, 
       user, 
-      message: `Berhasil menambahkan +${addAmount} kredit ke akun ${user.displayName || user.email} (${user.serialCode}). Saldo baru: ${user.credits} Kredit.` 
+      message: mode === 'set'
+        ? `Berhasil mengatur kredit akun ${user.displayName || user.email} (${user.serialCode}) menjadi ${user.credits} Kredit.`
+        : `Berhasil menambahkan +${val} kredit ke akun ${user.displayName || user.email} (${user.serialCode}). Saldo baru: ${user.credits} Kredit.` 
     });
   } catch (err: any) {
     res.status(500).json({ error: err?.message || 'Gagal menambahkan kredit' });
@@ -658,13 +795,15 @@ app.delete('/api/tutorials/:id', (req: Request, res: Response) => {
 // 9. Website Projects Endpoints (Online storage)
 app.get('/api/websites', (req: Request, res: Response) => {
   try {
-    const { email, role } = req.query;
+    const { email, role, all } = req.query;
     const dbData = getDatabase();
     const userEmail = typeof email === 'string' ? email.trim().toLowerCase() : '';
     const userRole = typeof role === 'string' ? role : '';
+    const showAll = all === 'true' || all === '1';
 
-    if (userRole === 'admin' || isSuperAdminEmail(userEmail)) {
-      res.json({ success: true, websites: dbData.websites });
+    // Only return all websites if explicitly requested with all=true by admin
+    if (showAll && (userRole === 'admin' || isSuperAdminEmail(userEmail))) {
+      res.json({ success: true, websites: dbData.websites || [] });
       return;
     }
 
@@ -673,8 +812,9 @@ app.get('/api/websites', (req: Request, res: Response) => {
       return;
     }
 
-    const filtered = dbData.websites.filter(
-      w => w.authorEmail.toLowerCase() === userEmail
+    // STRICT USER FILTER: return ONLY websites that belong to this specific user!
+    const filtered = (dbData.websites || []).filter(
+      w => (w.authorEmail || '').trim().toLowerCase() === userEmail
     );
     res.json({ success: true, websites: filtered });
   } catch (err: any) {
@@ -1014,39 +1154,73 @@ CRITICAL INSTRUCTIONS FOR GENERATING THE CODE:
 11. RESPONSIVE DESIGN:
    Optimized for mobile-first with clean breakpoints (sm:, md:, lg:) ensuring 100% viewport usability.`;
 
-    const saveIfBase64 = (imgStr: string | undefined): string => {
+    const saveIfBase64 = async (imgStr: string | undefined): Promise<string> => {
       if (!imgStr) return '';
       if (!imgStr.startsWith('data:')) return imgStr;
       try {
         const matches = imgStr.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
         let ext = 'jpg';
         let dataBuffer: Buffer;
+        let cleanBase64 = imgStr;
         if (matches && matches.length === 3) {
           const mime = matches[1];
           if (mime.includes('png')) ext = 'png';
           else if (mime.includes('webp')) ext = 'webp';
           dataBuffer = Buffer.from(matches[2], 'base64');
+          cleanBase64 = matches[2];
         } else {
           dataBuffer = Buffer.from(imgStr, 'base64');
+          cleanBase64 = imgStr.replace(/^data:[^;]+;base64,/, '');
         }
+
+        // Try public Imgur upload for real direct link
+        const imgurLink = await uploadToPublicImgur(cleanBase64);
+        if (imgurLink) return imgurLink;
+
+        // Fallback local save with absolute URL
         const safeName = `img_auto_${Date.now()}_${Math.random().toString(36).substring(2, 6)}.${ext}`;
         fs.writeFileSync(path.join(uploadsDir, safeName), dataBuffer);
-        return `/uploads/${safeName}`;
+        const host = req.get('host') || 'localhost:3000';
+        const protocol = req.protocol === 'https' || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
+        return `${protocol}://${host}/uploads/${safeName}`;
       } catch (e) {
         console.warn('Failed to convert base64 image:', e);
         return imgStr;
       }
     };
 
-    const processedHeroImg = saveIfBase64(media?.heroImageUrl) || media?.heroImageUrl || 'https://i.imgur.com/492vOq5.jpg';
-    const processedProducts = (storeProducts && storeProducts.length > 0 ? storeProducts : [
+    const processedHeroImg = (await saveIfBase64(media?.heroImageUrl)) || media?.heroImageUrl || 'https://i.imgur.com/492vOq5.jpg';
+    
+    const rawProducts = storeProducts && storeProducts.length > 0 ? storeProducts : [
       { name: 'Kaos Polos Heavyweight 24s Black', price: '129.000', description: 'Katun combed 24s adem dan tebal', imageUrl: 'https://i.imgur.com/8Km9tLL.jpg' },
       { name: 'Jaket Hoodie Streetwear Noir', price: '249.000', description: 'Bahan fleece hangat kualitas distro', imageUrl: 'https://i.imgur.com/V7RkJ3R.jpg' },
       { name: 'Celana Chino Slim Stretch Grey', price: '189.000', description: 'Katun twill stretch lentur nyaman', imageUrl: 'https://i.imgur.com/mG7P2sJ.jpg' }
-    ]).map((p: any) => ({
+    ];
+    
+    const processedProducts = await Promise.all(rawProducts.map(async (p: any) => ({
       ...p,
-      imageUrl: saveIfBase64(p.imageUrl) || p.imageUrl,
-    }));
+      imageUrl: (await saveIfBase64(p.imageUrl)) || p.imageUrl,
+    })));
+
+    const processedBlogPosts = await Promise.all((blogPosts || []).map(async (b: any) => ({
+      ...b,
+      imageUrl: (await saveIfBase64(b.imageUrl)) || b.imageUrl,
+    })));
+
+    const processedPortfolio = await Promise.all((portfolioProjects || []).map(async (p: any) => ({
+      ...p,
+      imageUrl: (await saveIfBase64(p.imageUrl)) || p.imageUrl,
+    })));
+
+    const processedMenu = await Promise.all((restaurantMenu || []).map(async (m: any) => ({
+      ...m,
+      imageUrl: (await saveIfBase64(m.imageUrl)) || m.imageUrl,
+    })));
+
+    const processedServices = await Promise.all((serviceItems || []).map(async (s: any) => ({
+      ...s,
+      imageUrl: (await saveIfBase64(s.imageUrl)) || s.imageUrl,
+    })));
 
     // Update wizardData with processed image URLs so fallback and AI get real clean URLs
     const sanitizedWizardData = {
@@ -1056,18 +1230,22 @@ CRITICAL INSTRUCTIONS FOR GENERATING THE CODE:
         heroImageUrl: processedHeroImg,
       },
       storeProducts: processedProducts,
+      blogPosts: processedBlogPosts,
+      portfolioProjects: processedPortfolio,
+      restaurantMenu: processedMenu,
+      serviceItems: processedServices,
     };
 
     let itemsListDescription = '';
-    if (isBlog && blogPosts && blogPosts.length > 0) {
+    if (isBlog && processedBlogPosts && processedBlogPosts.length > 0) {
       itemsListDescription = `- Blog Articles configured by author:\n` +
-        blogPosts.map((b: any, idx: number) => `  ${idx + 1}. Title: "${b.title}", Category: "${b.category}", Read Time: "${b.readTime}", Image: "${b.imageUrl}", Excerpt: "${b.excerpt}"`).join('\n');
-    } else if (isPortfolio && portfolioProjects && portfolioProjects.length > 0) {
+        processedBlogPosts.map((b: any, idx: number) => `  ${idx + 1}. Title: "${b.title}", Category: "${b.category}", Read Time: "${b.readTime}", Image: "${b.imageUrl}", Excerpt: "${b.excerpt}"`).join('\n');
+    } else if (isPortfolio && processedPortfolio && processedPortfolio.length > 0) {
       itemsListDescription = `- Portfolio Projects configured by creator:\n` +
-        portfolioProjects.map((p: any, idx: number) => `  ${idx + 1}. Title: "${p.title}", Category: "${p.category}", Client/Year: "${p.clientYear}", Image: "${p.imageUrl}", Description: "${p.description}"`).join('\n');
-    } else if (isRestaurant && restaurantMenu && restaurantMenu.length > 0) {
+        processedPortfolio.map((p: any, idx: number) => `  ${idx + 1}. Title: "${p.title}", Category: "${p.category}", Client/Year: "${p.clientYear}", Image: "${p.imageUrl}", Description: "${p.description}"`).join('\n');
+    } else if (isRestaurant && processedMenu && processedMenu.length > 0) {
       itemsListDescription = `- Restaurant Food & Drink Menu configured by chef:\n` +
-        restaurantMenu.map((m: any, idx: number) => `  ${idx + 1}. Menu: "${m.name}", Category: "${m.category}", Price: "Rp ${m.price}", Image: "${m.imageUrl}", Description: "${m.description}"`).join('\n');
+        processedMenu.map((m: any, idx: number) => `  ${idx + 1}. Menu: "${m.name}", Category: "${m.category}", Price: "Rp ${m.price}", Image: "${m.imageUrl}", Description: "${m.description}"`).join('\n');
     } else {
       itemsListDescription = `- Products List configured by store owner:\n` +
         processedProducts.map((p: any, idx: number) => `  ${idx + 1}. Name: "${p.name}", Price: "Rp ${p.price}", Image: "${p.imageUrl}", Description: "${p.description}"`).join('\n');

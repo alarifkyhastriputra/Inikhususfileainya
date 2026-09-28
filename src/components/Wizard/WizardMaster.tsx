@@ -408,26 +408,24 @@ export const WizardMaster: React.FC<WizardMasterProps> = ({
   const stepTitles = getStepTitles(wizardData.websiteType);
 
   return (
-    <div className="min-h-screen bg-[#0B0F19] text-slate-100 flex flex-col font-['Plus_Jakarta_Sans',sans-serif]">
+    <div className="min-h-screen bg-black text-zinc-100 flex flex-col font-['Plus_Jakarta_Sans',sans-serif]">
       {/* Top Main Navigation Header */}
-      <header className="sticky top-0 z-40 bg-[#0B0F19]/95 backdrop-blur-md border-b border-slate-800 px-4 sm:px-6 py-2.5 flex items-center justify-between">
+      <header className="sticky top-0 z-40 bg-black/95 backdrop-blur-md border-b border-zinc-800 px-4 sm:px-6 py-2.5 flex items-center justify-between">
         {/* Brand Logo */}
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-cyan-400 p-0.5 shadow-lg shadow-indigo-500/20 shrink-0">
-            <div className="w-full h-full bg-[#0B0F19] rounded-[10px] flex items-center justify-center text-indigo-400 font-black text-lg tracking-tighter">
-              v
-            </div>
+          <div className="w-9 h-9 rounded-xl bg-white text-black flex items-center justify-center font-black text-lg tracking-tighter shrink-0 shadow">
+            v
           </div>
           <div>
             <div className="flex items-center gap-2">
               <span className="font-extrabold text-lg sm:text-xl tracking-tight text-white">
-                vimos<span className="text-indigo-400">.ai</span>
+                vimos<span className="text-zinc-400">.ai</span>
               </span>
-              <span className="hidden sm:inline-block px-2 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-semibold">
+              <span className="hidden sm:inline-block px-2 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300 text-[10px] font-semibold">
                 {wizardData.websiteType || 'Website'} • 15 Langkah
               </span>
             </div>
-            <span className="text-[10px] text-slate-400 hidden sm:block -mt-0.5">
+            <span className="text-[10px] text-zinc-400 hidden sm:block -mt-0.5">
               Isi & sesuaikan setiap langkah • Generate di langkah terakhir
             </span>
           </div>
@@ -435,9 +433,9 @@ export const WizardMaster: React.FC<WizardMasterProps> = ({
 
         {/* Center Indicator */}
         {!generatedHtml && (
-          <div className="hidden md:flex items-center gap-2 px-3 py-1 bg-slate-900 border border-slate-800 rounded-full text-xs">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-slate-300 font-medium">
+          <div className="hidden md:flex items-center gap-2 px-3 py-1 bg-zinc-900 border border-zinc-800 rounded-full text-xs">
+            <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+            <span className="text-zinc-300 font-medium">
               Langkah {currentStep} dari 15: <strong className="text-white">{stepTitles[currentStep - 1]}</strong>
             </span>
           </div>
@@ -447,10 +445,10 @@ export const WizardMaster: React.FC<WizardMasterProps> = ({
         <div className="flex items-center gap-2 sm:gap-2.5">
           {/* Credit Balance Indicator */}
           <div 
-            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-amber-500/10 border border-amber-500/30 rounded-xl text-xs font-bold text-amber-300 shadow-sm"
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-xl text-xs font-bold text-white shadow-sm"
             title="Biaya pembuatan website: 100 Kredit per website"
           >
-            <Coins className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+            <Coins className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
             <span className="font-mono">{isSuperAdmin ? 'Unlimited' : `${user.credits ?? 0} Kredit`}</span>
           </div>
 
@@ -459,7 +457,7 @@ export const WizardMaster: React.FC<WizardMasterProps> = ({
             <button
               type="button"
               onClick={handleResetToNew}
-              className="hidden sm:flex px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl text-xs font-semibold items-center gap-1 border border-slate-700 transition cursor-pointer"
+              className="hidden sm:flex px-2.5 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white rounded-xl text-xs font-semibold items-center gap-1 border border-zinc-800 transition cursor-pointer"
               title="Mulai Ulang dari Langkah 1"
             >
               <Plus className="w-3.5 h-3.5" />
@@ -470,13 +468,13 @@ export const WizardMaster: React.FC<WizardMasterProps> = ({
           {/* Riwayat Pembuatan Web (History) */}
           <button
             onClick={onOpenProjects}
-            className="px-3 py-1.5 bg-gradient-to-r from-indigo-900/40 to-slate-800 hover:bg-indigo-900/60 text-slate-200 hover:text-white rounded-xl border border-indigo-500/30 text-xs font-bold flex items-center gap-1.5 transition shadow-sm cursor-pointer"
+            className="px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-200 hover:text-white rounded-xl border border-zinc-800 text-xs font-bold flex items-center gap-1.5 transition shadow-sm cursor-pointer"
             title="Buka Riwayat Pembuatan Website"
           >
-            <History className="w-4 h-4 text-indigo-400" />
+            <History className="w-4 h-4 text-zinc-400" />
             <span>Riwayat Web</span>
             {websites.length > 0 && (
-              <span className="px-1.5 py-0.2 bg-indigo-500 text-white rounded-full text-[10px] font-bold">
+              <span className="px-1.5 py-0.2 bg-white text-black rounded-full text-[10px] font-bold">
                 {websites.length}
               </span>
             )}
@@ -485,10 +483,10 @@ export const WizardMaster: React.FC<WizardMasterProps> = ({
           {/* Tutorial YT Button */}
           <button
             onClick={() => setShowTutorialsModal(true)}
-            className="px-3 py-1.5 bg-red-600/20 hover:bg-red-600/30 text-red-300 hover:text-white rounded-xl border border-red-500/40 text-xs font-bold flex items-center gap-1.5 transition shadow-sm cursor-pointer"
+            className="px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white rounded-xl border border-zinc-800 text-xs font-bold flex items-center gap-1.5 transition shadow-sm cursor-pointer"
             title="Tonton Video Tutorial YouTube"
           >
-            <Youtube className="w-4 h-4 text-red-400" />
+            <Youtube className="w-4 h-4 text-zinc-400" />
             <span className="hidden sm:inline">Tutorial YT</span>
           </button>
 
@@ -496,18 +494,18 @@ export const WizardMaster: React.FC<WizardMasterProps> = ({
           {user.role === 'admin' && (
             <button
               onClick={onOpenAdmin}
-              className="px-2.5 py-1.5 bg-gradient-to-r from-amber-500/20 to-indigo-500/20 hover:from-amber-500/30 hover:to-indigo-500/30 text-amber-300 rounded-xl border border-amber-500/40 text-xs font-bold flex items-center gap-1.5 shadow-md shadow-amber-500/10 transition cursor-pointer"
+              className="px-2.5 py-1.5 bg-white hover:bg-zinc-200 text-black rounded-xl text-xs font-bold flex items-center gap-1.5 shadow transition cursor-pointer"
             >
-              <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
-              <span className="hidden sm:inline">Admin GUI</span>
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Admin Dashboard</span>
             </button>
           )}
 
           {/* User info & Signout */}
-          <div className="flex items-center gap-2 border-l border-slate-800 pl-2">
+          <div className="flex items-center gap-2 border-l border-zinc-800 pl-2">
             <button
               onClick={onLogout}
-              className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-xl transition cursor-pointer"
+              className="p-1.5 text-zinc-400 hover:text-white hover:bg-zinc-900 rounded-xl transition cursor-pointer"
               title="Keluar"
             >
               <LogOut className="w-4 h-4" />
@@ -577,13 +575,13 @@ export const WizardMaster: React.FC<WizardMasterProps> = ({
           </main>
 
           {/* Bottom Fixed Navigation Actions Footer */}
-          <footer className="fixed bottom-0 left-0 right-0 bg-[#0B0F19]/95 backdrop-blur-md border-t border-slate-800 p-4 z-40 shadow-2xl">
+          <footer className="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-md border-t border-zinc-800 p-4 z-40 shadow-2xl">
             <div className="max-w-5xl mx-auto flex items-center justify-between gap-4">
               <button
                 type="button"
                 onClick={handlePrev}
                 disabled={currentStep === 1}
-                className="px-5 py-2.5 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-semibold flex items-center gap-2 transition disabled:opacity-30 disabled:hover:bg-slate-800 cursor-pointer disabled:cursor-not-allowed"
+                className="px-5 py-2.5 rounded-xl border border-zinc-700 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white text-xs font-semibold flex items-center gap-2 transition disabled:opacity-30 disabled:hover:bg-zinc-900 cursor-pointer disabled:cursor-not-allowed"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>Sebelumnya</span>
@@ -593,7 +591,7 @@ export const WizardMaster: React.FC<WizardMasterProps> = ({
                 <span className="text-xs text-white font-bold">
                   Langkah {currentStep} dari 15
                 </span>
-                <span className="text-[10px] text-slate-400">
+                <span className="text-[10px] text-zinc-400">
                   {currentStep < 15 
                     ? 'Selesaikan hingga Langkah 15 untuk membuat website' 
                     : 'Langkah terakhir: Biaya 100 Kredit per website'}
@@ -605,7 +603,7 @@ export const WizardMaster: React.FC<WizardMasterProps> = ({
                 <button
                   type="button"
                   onClick={handleNext}
-                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white text-xs font-bold flex items-center gap-2 shadow-lg shadow-indigo-500/25 transition cursor-pointer"
+                  className="px-6 py-2.5 rounded-xl bg-white hover:bg-zinc-200 text-black text-xs font-bold flex items-center gap-2 shadow-lg transition cursor-pointer"
                 >
                   <span>Lanjut Langkah Berikutnya</span>
                   <ArrowRight className="w-4 h-4" />
@@ -615,9 +613,9 @@ export const WizardMaster: React.FC<WizardMasterProps> = ({
                   type="button"
                   onClick={handleStartGenerate}
                   disabled={isGenerating || !hasEnoughCredits}
-                  className="px-7 py-3 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-400 hover:from-indigo-600 hover:to-cyan-500 text-white text-xs sm:text-sm font-extrabold flex items-center gap-2 shadow-xl shadow-indigo-500/30 transition transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                  className="px-7 py-3 rounded-xl bg-white hover:bg-zinc-200 text-black text-xs sm:text-sm font-extrabold flex items-center gap-2 shadow-xl transition transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                 >
-                  <Sparkles className="w-4 h-4 animate-pulse" />
+                  <Sparkles className="w-4 h-4" />
                   <span>{isGenerating ? 'Memproses Website...' : '✨ Buat Website (100 Kredit)'}</span>
                 </button>
               )}

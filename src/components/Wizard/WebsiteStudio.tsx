@@ -66,7 +66,7 @@ export const WebsiteStudio: React.FC<WebsiteStudioProps> = ({
     setEditableCode(htmlCode);
   }, [htmlCode]);
 
-  // Step 20: Download direct single HTML file "website.html"
+  // Download direct single HTML file "website.html"
   const handleDownloadHtml = () => {
     const blob = new Blob([editableCode], { type: 'text/html;charset=utf-8' });
     const url = URL.createObjectURL(blob);
@@ -79,7 +79,7 @@ export const WebsiteStudio: React.FC<WebsiteStudioProps> = ({
     setTimeout(() => setDownloadSuccess(false), 2500);
   };
 
-  // Step 20: Download ZIP package
+  // Download ZIP package
   const handleDownloadZip = async () => {
     const zip = new JSZip();
     zip.file('index.html', editableCode);
@@ -94,14 +94,14 @@ export const WebsiteStudio: React.FC<WebsiteStudioProps> = ({
     URL.revokeObjectURL(url);
   };
 
-  // Step 20: Copy Code
+  // Copy Code
   const handleCopyCode = () => {
     navigator.clipboard.writeText(editableCode);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // Step 18: Edit dengan AI
+  // Edit dengan AI
   const handleSendAiRefinement = async (e?: React.FormEvent, customPrompt?: string) => {
     if (e) e.preventDefault();
     const promptToSend = (customPrompt || chatInput).trim();
@@ -152,38 +152,38 @@ export const WebsiteStudio: React.FC<WebsiteStudioProps> = ({
   };
 
   return (
-    <div className="flex-1 flex flex-col h-[calc(100vh-62px)] bg-[#090D16] overflow-hidden">
+    <div className="flex-1 flex flex-col h-[calc(100vh-62px)] bg-black text-zinc-100 overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]">
       
       {/* Top Studio Control Bar */}
-      <div className="px-4 py-2.5 bg-[#111827] border-b border-slate-800 flex flex-wrap items-center justify-between gap-3 shrink-0">
+      <div className="px-4 py-2.5 bg-zinc-950 border-b border-zinc-800 flex flex-wrap items-center justify-between gap-3 shrink-0">
         
         {/* Left: Back & Title */}
         <div className="flex items-center gap-2">
           <button
             onClick={onBackToWizard}
-            className="p-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition flex items-center gap-1.5 text-xs font-semibold"
+            className="p-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 transition flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
             title="Kembali ke Wizard untuk Ubah Pengaturan"
           >
             <ArrowLeft className="w-4 h-4" />
             <span className="hidden md:inline">Ubah Pengaturan</span>
           </button>
 
-          <div className="h-5 w-px bg-slate-800 mx-1 hidden sm:block" />
+          <div className="h-5 w-px bg-zinc-800 mx-1 hidden sm:block" />
 
           <div>
             <h3 className="text-xs font-bold text-white truncate max-w-[200px] sm:max-w-xs">{title}</h3>
-            <span className="text-[10px] text-emerald-400 font-mono">1 File Standalone (HTML+CSS+JS)</span>
+            <span className="text-[10px] text-zinc-400 font-mono">1 File Standalone (HTML+CSS+JS)</span>
           </div>
         </div>
 
         {/* Center: Viewport & Mode Toggle */}
         <div className="flex items-center gap-2">
           {/* Viewport Toggles */}
-          <div className="flex items-center gap-1 bg-[#1e293b] p-1 rounded-xl border border-slate-700">
+          <div className="flex items-center gap-1 bg-zinc-900 p-1 rounded-xl border border-zinc-800">
             <button
               onClick={() => setViewport('desktop')}
-              className={`p-1.5 rounded-lg text-xs font-medium flex items-center gap-1 transition ${
-                viewport === 'desktop' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'
+              className={`p-1.5 rounded-lg text-xs font-medium flex items-center gap-1 transition cursor-pointer ${
+                viewport === 'desktop' ? 'bg-white text-black shadow-sm font-bold' : 'text-zinc-400 hover:text-white'
               }`}
               title="Desktop (100%)"
             >
@@ -193,8 +193,8 @@ export const WebsiteStudio: React.FC<WebsiteStudioProps> = ({
 
             <button
               onClick={() => setViewport('tablet')}
-              className={`p-1.5 rounded-lg text-xs font-medium flex items-center gap-1 transition ${
-                viewport === 'tablet' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'
+              className={`p-1.5 rounded-lg text-xs font-medium flex items-center gap-1 transition cursor-pointer ${
+                viewport === 'tablet' ? 'bg-white text-black shadow-sm font-bold' : 'text-zinc-400 hover:text-white'
               }`}
               title="Tablet (768px)"
             >
@@ -204,8 +204,8 @@ export const WebsiteStudio: React.FC<WebsiteStudioProps> = ({
 
             <button
               onClick={() => setViewport('mobile')}
-              className={`p-1.5 rounded-lg text-xs font-medium flex items-center gap-1 transition ${
-                viewport === 'mobile' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'
+              className={`p-1.5 rounded-lg text-xs font-medium flex items-center gap-1 transition cursor-pointer ${
+                viewport === 'mobile' ? 'bg-white text-black shadow-sm font-bold' : 'text-zinc-400 hover:text-white'
               }`}
               title="Mobile (375px)"
             >
@@ -215,11 +215,11 @@ export const WebsiteStudio: React.FC<WebsiteStudioProps> = ({
           </div>
 
           {/* Mode Switcher: Preview | Code */}
-          <div className="flex items-center gap-1 bg-[#1e293b] p-1 rounded-xl border border-slate-700">
+          <div className="flex items-center gap-1 bg-zinc-900 p-1 rounded-xl border border-zinc-800">
             <button
               onClick={() => setActiveTab('preview')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition ${
-                activeTab === 'preview' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer ${
+                activeTab === 'preview' ? 'bg-white text-black shadow-sm font-bold' : 'text-zinc-400 hover:text-white'
               }`}
             >
               <Eye className="w-3.5 h-3.5" />
@@ -228,8 +228,8 @@ export const WebsiteStudio: React.FC<WebsiteStudioProps> = ({
 
             <button
               onClick={() => setActiveTab('code')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition ${
-                activeTab === 'code' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer ${
+                activeTab === 'code' ? 'bg-white text-black shadow-sm font-bold' : 'text-zinc-400 hover:text-white'
               }`}
             >
               <Code className="w-3.5 h-3.5" />
@@ -243,10 +243,10 @@ export const WebsiteStudio: React.FC<WebsiteStudioProps> = ({
           {/* Ganti Foto & Link Imgur Button */}
           <button
             onClick={() => setShowImageEditorModal(true)}
-            className="px-3 py-1.5 bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 hover:text-white rounded-xl text-xs font-bold flex items-center gap-1.5 border border-indigo-500/40 transition shadow cursor-pointer"
+            className="px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-200 hover:text-white rounded-xl text-xs font-bold flex items-center gap-1.5 border border-zinc-800 transition shadow-sm cursor-pointer"
             title="Kelola & Ganti Foto Produk / Banner dengan Link Imgur"
           >
-            <ImageIcon className="w-3.5 h-3.5 text-indigo-400" />
+            <ImageIcon className="w-3.5 h-3.5 text-white" />
             <span>Ganti Foto & Imgur</span>
           </button>
 
@@ -255,8 +255,8 @@ export const WebsiteStudio: React.FC<WebsiteStudioProps> = ({
             onClick={() => setShowAiChat(!showAiChat)}
             className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 border transition cursor-pointer ${
               showAiChat
-                ? 'bg-purple-600 text-white border-purple-500 shadow-lg shadow-purple-600/30'
-                : 'bg-slate-800 text-slate-300 border-slate-700 hover:text-white'
+                ? 'bg-white text-black border-white shadow'
+                : 'bg-zinc-900 text-zinc-300 border-zinc-800 hover:text-white'
             }`}
           >
             <Bot className="w-3.5 h-3.5" />
@@ -269,7 +269,7 @@ export const WebsiteStudio: React.FC<WebsiteStudioProps> = ({
               onSaveToProjects();
             }}
             disabled={isSaving}
-            className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-lg shadow-emerald-600/20 transition cursor-pointer"
+            className="px-3.5 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-white border border-zinc-700 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition cursor-pointer"
             title="Simpan seluruh perubahan manual dan AI ke database website Anda"
           >
             <Save className="w-3.5 h-3.5" />
@@ -279,15 +279,15 @@ export const WebsiteStudio: React.FC<WebsiteStudioProps> = ({
           {/* Direct Download website.html Button */}
           <button
             onClick={handleDownloadHtml}
-            className="px-3.5 py-1.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-lg shadow-emerald-500/20 transition"
+            className="px-3.5 py-1.5 bg-white hover:bg-zinc-200 text-black rounded-xl text-xs font-bold flex items-center gap-1.5 shadow transition cursor-pointer"
           >
-            {downloadSuccess ? <Check className="w-3.5 h-3.5" /> : <Download className="w-3.5 h-3.5" />}
+            {downloadSuccess ? <Check className="w-3.5 h-3.5 text-black" /> : <Download className="w-3.5 h-3.5 text-black" />}
             <span>Download HTML</span>
           </button>
 
           <button
             onClick={handleDownloadZip}
-            className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl border border-slate-700 transition"
+            className="p-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white rounded-xl border border-zinc-800 transition cursor-pointer"
             title="Download Paket ZIP"
           >
             <FileCode className="w-4 h-4" />
@@ -295,15 +295,15 @@ export const WebsiteStudio: React.FC<WebsiteStudioProps> = ({
 
           <button
             onClick={handleCopyCode}
-            className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl border border-slate-700 transition"
+            className="p-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white rounded-xl border border-zinc-800 transition cursor-pointer"
             title="Salin Seluruh Kode HTML"
           >
-            {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+            {copied ? <Check className="w-4 h-4 text-white" /> : <Copy className="w-4 h-4" />}
           </button>
 
           <button
             onClick={() => setIsFullscreen(true)}
-            className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl border border-slate-700 transition"
+            className="p-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white rounded-xl border border-zinc-800 transition cursor-pointer"
             title="Fullscreen"
           >
             <Maximize2 className="w-4 h-4" />
@@ -314,10 +314,10 @@ export const WebsiteStudio: React.FC<WebsiteStudioProps> = ({
       {/* Main Studio Canvas & Drawer */}
       <div className="flex-1 flex overflow-hidden relative">
         {/* Visual Preview / Code Workspace */}
-        <div className="flex-1 flex items-center justify-center p-3 overflow-auto bg-[#070B14]">
+        <div className="flex-1 flex items-center justify-center p-3 overflow-auto bg-black">
           {activeTab === 'preview' ? (
             <div
-              className={`h-full transition-all duration-300 ${viewportWidths[viewport]} bg-white rounded-xl overflow-hidden shadow-2xl relative border border-slate-700`}
+              className={`h-full transition-all duration-300 ${viewportWidths[viewport]} bg-white rounded-xl overflow-hidden shadow-2xl relative border border-zinc-800`}
             >
               <iframe
                 ref={iframeRef}
@@ -328,18 +328,18 @@ export const WebsiteStudio: React.FC<WebsiteStudioProps> = ({
               />
             </div>
           ) : (
-            <div className="w-full h-full flex flex-col bg-[#0F172A] rounded-xl border border-slate-800 overflow-hidden font-mono text-xs">
-              <div className="p-3 bg-[#1e293b] border-b border-slate-800 flex items-center justify-between text-slate-300">
+            <div className="w-full h-full flex flex-col bg-zinc-950 rounded-xl border border-zinc-800 overflow-hidden font-mono text-xs">
+              <div className="p-3 bg-zinc-900 border-b border-zinc-800 flex items-center justify-between text-zinc-300">
                 <span className="flex items-center gap-2">
-                  <FileCode className="w-4 h-4 text-indigo-400" />
+                  <FileCode className="w-4 h-4 text-white" />
                   <span>index.html (Single File Standalone)</span>
                 </span>
 
                 <button
                   onClick={() => onUpdateHtml(editableCode)}
-                  className="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-sans text-xs font-semibold flex items-center gap-1 transition"
+                  className="px-3 py-1 bg-white hover:bg-zinc-200 text-black rounded-lg font-sans text-xs font-bold flex items-center gap-1 transition cursor-pointer"
                 >
-                  <RotateCcw className="w-3.5 h-3.5" />
+                  <RotateCcw className="w-3.5 h-3.5 text-black" />
                   <span>Terapkan Perubahan Manual</span>
                 </button>
               </div>
@@ -347,7 +347,7 @@ export const WebsiteStudio: React.FC<WebsiteStudioProps> = ({
               <textarea
                 value={editableCode}
                 onChange={(e) => setEditableCode(e.target.value)}
-                className="w-full flex-1 p-4 bg-[#090D16] text-emerald-400 font-mono text-xs outline-none resize-none leading-relaxed"
+                className="w-full flex-1 p-4 bg-black text-zinc-100 font-mono text-xs outline-none resize-none leading-relaxed"
                 spellCheck={false}
               />
             </div>
@@ -356,22 +356,22 @@ export const WebsiteStudio: React.FC<WebsiteStudioProps> = ({
 
         {/* AI Chat Refinement Sidebar (Step 18) */}
         {showAiChat && (
-          <div className="w-80 sm:w-96 bg-[#111827] border-l border-slate-800 flex flex-col z-20 shrink-0">
+          <div className="w-80 sm:w-96 bg-zinc-950 border-l border-zinc-800 flex flex-col z-20 shrink-0">
             {/* Chat Header */}
-            <div className="p-3.5 border-b border-slate-800 flex items-center justify-between bg-[#0B0F19]">
+            <div className="p-3.5 border-b border-zinc-800 flex items-center justify-between bg-black">
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center">
+                <div className="w-7 h-7 rounded-lg bg-zinc-900 border border-zinc-800 text-white flex items-center justify-center">
                   <Bot className="w-4 h-4" />
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-white">Vimos AI Assistant</h4>
-                  <p className="text-[10px] text-slate-400">Ketik permintaan untuk mengedit website</p>
+                  <p className="text-[10px] text-zinc-400">Ketik permintaan untuk mengedit website</p>
                 </div>
               </div>
 
               <button
                 onClick={() => setShowAiChat(false)}
-                className="p-1 text-slate-400 hover:text-white rounded-lg"
+                className="p-1 text-zinc-400 hover:text-white rounded-lg cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -384,8 +384,8 @@ export const WebsiteStudio: React.FC<WebsiteStudioProps> = ({
                   key={idx}
                   className={`p-3 rounded-2xl max-w-[90%] leading-relaxed ${
                     msg.role === 'user'
-                      ? 'bg-indigo-600 text-white ml-auto'
-                      : 'bg-[#1e293b] text-slate-200 border border-slate-700/60'
+                      ? 'bg-white text-black font-medium ml-auto'
+                      : 'bg-zinc-900 text-zinc-200 border border-zinc-800'
                   }`}
                 >
                   {msg.text}
@@ -393,28 +393,28 @@ export const WebsiteStudio: React.FC<WebsiteStudioProps> = ({
               ))}
 
               {isRefining && (
-                <div className="p-3 rounded-2xl bg-[#1e293b] border border-purple-500/40 text-purple-300 flex items-center gap-2">
-                  <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                <div className="p-3 rounded-2xl bg-zinc-900 border border-zinc-700 text-zinc-200 flex items-center gap-2">
+                  <RefreshCw className="w-3.5 h-3.5 animate-spin text-white" />
                   <span>Vimos AI sedang memperbarui website...</span>
                 </div>
               )}
             </div>
 
             {/* Quick Prompts */}
-            <div className="p-2.5 bg-[#0B0F19] border-t border-slate-800/80 flex flex-wrap gap-1.5">
+            <div className="p-2.5 bg-black border-t border-zinc-800/80 flex flex-wrap gap-1.5">
               {[
                 'Ganti foto produk dengan link Imgur',
-                'Ganti warna tombol menjadi merah',
-                'Buat header lebih kecil',
+                'Ganti warna tombol menjadi hitam putih',
+                'Buat header lebih minimalis',
                 'Tambahkan 3 produk baru',
-                'Buat tampilannya lebih modern',
+                'Buat tampilannya lebih modern & elegan',
                 'Pindahkan About ke bawah Products',
               ].map((chip, i) => (
                 <button
                   key={i}
                   type="button"
                   onClick={() => handleSendAiRefinement(undefined, chip)}
-                  className="px-2 py-1 bg-[#1e293b] hover:bg-slate-800 text-[10px] text-slate-300 hover:text-white rounded-lg border border-slate-700 transition"
+                  className="px-2 py-1 bg-zinc-900 hover:bg-zinc-800 text-[10px] text-zinc-300 hover:text-white rounded-lg border border-zinc-800 transition cursor-pointer"
                 >
                   + {chip}
                 </button>
@@ -422,18 +422,18 @@ export const WebsiteStudio: React.FC<WebsiteStudioProps> = ({
             </div>
 
             {/* Chat Input */}
-            <form onSubmit={handleSendAiRefinement} className="p-3 bg-[#0B0F19] border-t border-slate-800 flex items-center gap-2">
+            <form onSubmit={handleSendAiRefinement} className="p-3 bg-black border-t border-zinc-800 flex items-center gap-2">
               <input
                 type="text"
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
-                placeholder="Contoh: Ganti warna tombol menjadi merah..."
-                className="flex-1 bg-[#1e293b] border border-slate-700 text-white text-xs rounded-xl py-2 px-3 outline-none"
+                placeholder="Contoh: Ganti warna tombol menjadi hitam putih..."
+                className="flex-1 bg-zinc-900 border border-zinc-800 focus:border-zinc-500 text-white text-xs rounded-xl py-2 px-3 outline-none"
               />
               <button
                 type="submit"
                 disabled={isRefining || !chatInput.trim()}
-                className="p-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl disabled:opacity-50 transition"
+                className="p-2 bg-white hover:bg-zinc-200 text-black rounded-xl disabled:opacity-50 transition cursor-pointer"
               >
                 <Send className="w-4 h-4" />
               </button>
@@ -456,14 +456,14 @@ export const WebsiteStudio: React.FC<WebsiteStudioProps> = ({
       {/* Fullscreen Overlay */}
       {isFullscreen && (
         <div className="fixed inset-0 z-50 bg-black flex flex-col animate-fadeIn">
-          <div className="p-3 bg-[#111827] border-b border-slate-800 flex items-center justify-between px-6">
+          <div className="p-3 bg-zinc-950 border-b border-zinc-800 flex items-center justify-between px-6">
             <div className="flex items-center gap-2 text-white font-bold text-sm">
-              <Sparkles className="w-4 h-4 text-indigo-400" />
+              <Sparkles className="w-4 h-4 text-white" />
               <span>Fullscreen: {title}</span>
             </div>
             <button
               onClick={() => setIsFullscreen(false)}
-              className="px-4 py-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-semibold transition"
+              className="px-4 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-white border border-zinc-800 rounded-xl text-xs font-semibold transition cursor-pointer"
             >
               Tutup Fullscreen
             </button>

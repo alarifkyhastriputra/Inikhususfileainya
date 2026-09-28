@@ -59,27 +59,27 @@ export const Step8Content: React.FC<Step8Props> = ({ data, updateData }) => {
   };
 
   return (
-    <div className="space-y-6 max-w-3xl mx-auto">
+    <div className="space-y-6 max-w-3xl mx-auto font-['Plus_Jakarta_Sans',sans-serif]">
       <div className="text-center space-y-1.5 mb-6">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold">
-          <Sparkles className="w-3.5 h-3.5" />
-          Langkah 8: Isi Konten & Teks
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-semibold">
+          <Sparkles className="w-3.5 h-3.5 text-white" />
+          <span>Langkah 8: Isi Konten & Teks</span>
         </div>
         <h2 className="text-2xl font-bold text-white tracking-tight">Tentukan Teks & Narasi</h2>
-        <p className="text-xs text-slate-400">
+        <p className="text-xs text-zinc-400">
           Masukkan judul, deskripsi, dan tombol Call to Action, atau gunakan asisten AI untuk menulis teks profesional secara otomatis.
         </p>
       </div>
 
       {/* AI Generate Content Banner */}
-      <div className="bg-gradient-to-r from-purple-900/40 via-indigo-900/30 to-slate-900 border border-purple-500/30 p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 shadow-lg">
+      <div className="bg-zinc-950 border border-zinc-800 p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xl">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-purple-500/20 border border-purple-500/40 flex items-center justify-center text-purple-400 shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-white shrink-0">
             <Wand2 className="w-5 h-5" />
           </div>
           <div>
             <h4 className="text-sm font-bold text-white">Buat Konten Otomatis dengan AI</h4>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-zinc-400">
               AI akan membuatkan judul menarik, slogan persuasif, deskripsi bisnis, dan teks tombol CTA.
             </p>
           </div>
@@ -89,7 +89,7 @@ export const Step8Content: React.FC<Step8Props> = ({ data, updateData }) => {
           type="button"
           onClick={handleGenerateAIContent}
           disabled={loadingAI}
-          className="px-4 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 shadow-lg shadow-purple-600/25 disabled:opacity-50"
+          className="px-4 py-2.5 bg-white hover:bg-zinc-200 text-black rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 shadow disabled:opacity-50 cursor-pointer"
         >
           {loadingAI ? (
             <>
@@ -106,17 +106,17 @@ export const Step8Content: React.FC<Step8Props> = ({ data, updateData }) => {
       </div>
 
       {successToast && (
-        <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs rounded-xl flex items-center gap-2 animate-fadeIn">
-          <CheckCircle2 className="w-4 h-4 shrink-0" />
+        <div className="p-3 bg-zinc-900 border border-zinc-700 text-zinc-200 text-xs rounded-xl flex items-center gap-2 animate-fadeIn">
+          <CheckCircle2 className="w-4 h-4 shrink-0 text-white" />
           <span>Konten berhasil dibuat oleh AI berdasarkan informasi bisnis Anda!</span>
         </div>
       )}
 
       {/* Form Fields */}
-      <div className="space-y-4 bg-[#111827] p-6 rounded-2xl border border-slate-800 shadow-xl">
+      <div className="space-y-4 bg-zinc-950 p-6 rounded-2xl border border-zinc-800 shadow-xl">
         {/* Judul Utama */}
         <div>
-          <label className="block text-xs font-semibold text-slate-200 mb-1.5">
+          <label className="block text-xs font-semibold text-zinc-200 mb-1.5">
             Judul Utama (Headline) *
           </label>
           <input
@@ -125,13 +125,13 @@ export const Step8Content: React.FC<Step8Props> = ({ data, updateData }) => {
             value={content.headline}
             onChange={(e) => updateContentField('headline', e.target.value)}
             placeholder="Contoh: Selamat Datang di Vimos Store"
-            className="w-full bg-[#1e293b] border border-slate-700 focus:border-indigo-500 text-white rounded-xl py-2.5 px-4 text-sm outline-none"
+            className="w-full bg-zinc-900 border border-zinc-800 focus:border-zinc-500 text-white rounded-xl py-2.5 px-4 text-sm outline-none transition"
           />
         </div>
 
         {/* Subjudul / Deskripsi */}
         <div>
-          <label className="block text-xs font-semibold text-slate-200 mb-1.5">
+          <label className="block text-xs font-semibold text-zinc-200 mb-1.5">
             Subjudul / Slogan Pendukung (Subheadline)
           </label>
           <textarea
@@ -139,13 +139,13 @@ export const Step8Content: React.FC<Step8Props> = ({ data, updateData }) => {
             value={content.subheadline}
             onChange={(e) => updateContentField('subheadline', e.target.value)}
             placeholder="Contoh: Temukan berbagai produk pilihan kami dengan kualitas terbaik dan promo menarik."
-            className="w-full bg-[#1e293b] border border-slate-700 focus:border-indigo-500 text-white rounded-xl p-3 text-xs outline-none resize-none leading-relaxed"
+            className="w-full bg-zinc-900 border border-zinc-800 focus:border-zinc-500 text-white rounded-xl p-3 text-xs outline-none resize-none leading-relaxed transition"
           />
         </div>
 
         {/* Tombol CTA */}
         <div>
-          <label className="block text-xs font-semibold text-slate-200 mb-1.5">
+          <label className="block text-xs font-semibold text-zinc-200 mb-1.5">
             Teks Tombol Aksi (CTA Button)
           </label>
           <input
@@ -153,13 +153,13 @@ export const Step8Content: React.FC<Step8Props> = ({ data, updateData }) => {
             value={content.ctaText}
             onChange={(e) => updateContentField('ctaText', e.target.value)}
             placeholder="Contoh: Belanja Sekarang / Hubungi Kami / Mulai Gratis"
-            className="w-full bg-[#1e293b] border border-slate-700 focus:border-indigo-500 text-white rounded-xl py-2.5 px-4 text-xs outline-none"
+            className="w-full bg-zinc-900 border border-zinc-800 focus:border-zinc-500 text-white rounded-xl py-2.5 px-4 text-xs outline-none transition"
           />
         </div>
 
         {/* Cerita Tentang Kami */}
         <div>
-          <label className="block text-xs font-semibold text-slate-200 mb-1.5">
+          <label className="block text-xs font-semibold text-zinc-200 mb-1.5">
             Tentang Kami (About Us Summary)
           </label>
           <textarea
@@ -167,13 +167,13 @@ export const Step8Content: React.FC<Step8Props> = ({ data, updateData }) => {
             value={content.aboutUs}
             onChange={(e) => updateContentField('aboutUs', e.target.value)}
             placeholder="Ceritakan sejarah singkat atau komitmen perusahaan Anda..."
-            className="w-full bg-[#1e293b] border border-slate-700 focus:border-indigo-500 text-white rounded-xl p-3 text-xs outline-none resize-none leading-relaxed"
+            className="w-full bg-zinc-900 border border-zinc-800 focus:border-zinc-500 text-white rounded-xl p-3 text-xs outline-none resize-none leading-relaxed transition"
           />
         </div>
 
         {/* Judul Bagian Produk / Layanan */}
         <div>
-          <label className="block text-xs font-semibold text-slate-200 mb-1.5">
+          <label className="block text-xs font-semibold text-zinc-200 mb-1.5">
             Judul Bagian Produk / Layanan
           </label>
           <input
@@ -181,7 +181,7 @@ export const Step8Content: React.FC<Step8Props> = ({ data, updateData }) => {
             value={content.productServiceHeadline}
             onChange={(e) => updateContentField('productServiceHeadline', e.target.value)}
             placeholder="Contoh: Produk Unggulan Minggu Ini"
-            className="w-full bg-[#1e293b] border border-slate-700 focus:border-indigo-500 text-white rounded-xl py-2.5 px-4 text-xs outline-none"
+            className="w-full bg-zinc-900 border border-zinc-800 focus:border-zinc-500 text-white rounded-xl py-2.5 px-4 text-xs outline-none transition"
           />
         </div>
       </div>

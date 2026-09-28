@@ -9,55 +9,68 @@ interface Step4Props {
 
 const palettePresets = [
   {
-    id: 'Modern',
-    name: 'Modern Tech',
-    desc: 'Nuansa biru indigo tech berkelas dengan kontras tinggi',
+    id: 'Monochrome',
+    name: 'Pure Monochrome',
+    desc: 'Hitam pekat, abu-abu netral, dan putih bersih kontras tinggi',
     colors: {
-      primary: '#4F46E5',
-      secondary: '#1E293B',
-      background: '#0F172A',
-      text: '#F8FAFC',
-      button: '#4F46E5',
-      accent: '#06B6D4',
+      primary: '#FFFFFF',
+      secondary: '#18181B',
+      background: '#09090B',
+      text: '#FAFAFA',
+      button: '#FFFFFF',
+      accent: '#E4E4E7',
     },
   },
   {
     id: 'Dark',
-    name: 'Cyber Dark',
-    desc: 'Hitam obsidian pekat dengan aksen neon futuristik',
+    name: 'Cyber Obsidian',
+    desc: 'Hitam obsidian pekat dengan sentuhan zinc modern',
     colors: {
-      primary: '#6366F1',
-      secondary: '#18181B',
-      background: '#09090B',
-      text: '#FAFAFA',
-      button: '#6366F1',
-      accent: '#10B981',
-    },
-  },
-  {
-    id: 'Elegant',
-    name: 'Elegant Gold',
-    desc: 'Hitam arang eksklusif dipadu sentuhan emas mewah',
-    colors: {
-      primary: '#D97706',
-      secondary: '#1C1917',
-      background: '#0C0A09',
-      text: '#F5F5F4',
-      button: '#D97706',
-      accent: '#FBBF24',
+      primary: '#F4F4F5',
+      secondary: '#27272A',
+      background: '#000000',
+      text: '#FFFFFF',
+      button: '#E4E4E7',
+      accent: '#A1A1AA',
     },
   },
   {
     id: 'Minimalist',
-    name: 'Clean Minimalist',
+    name: 'Clean Light',
     desc: 'Latar terang minimalis, bersih, segar dan mudah dibaca',
     colors: {
-      primary: '#0F172A',
-      secondary: '#F1F5F9',
+      primary: '#09090B',
+      secondary: '#F4F4F5',
       background: '#FFFFFF',
-      text: '#0F172A',
-      button: '#0F172A',
-      accent: '#3B82F6',
+      text: '#09090B',
+      button: '#09090B',
+      accent: '#71717A',
+    },
+  },
+  {
+    id: 'Modern',
+    name: 'Modern Zinc',
+    desc: 'Nuansa zinc tech berkelas dengan kontras tinggi',
+    colors: {
+      primary: '#3B82F6',
+      secondary: '#18181B',
+      background: '#09090B',
+      text: '#FAFAFA',
+      button: '#3B82F6',
+      accent: '#60A5FA',
+    },
+  },
+  {
+    id: 'Elegant',
+    name: 'Elegant Warmth',
+    desc: 'Hitam arang eksklusif dipadu sentuhan amber mewah',
+    colors: {
+      primary: '#F59E0B',
+      secondary: '#1C1917',
+      background: '#0C0A09',
+      text: '#F5F5F4',
+      button: '#F59E0B',
+      accent: '#FCD34D',
     },
   },
   {
@@ -65,51 +78,12 @@ const palettePresets = [
     name: 'Luxe Emerald',
     desc: 'Hijau zamrud elegan dengan kesan premium aristokrat',
     colors: {
-      primary: '#059669',
+      primary: '#10B981',
       secondary: '#064E3B',
       background: '#022C22',
       text: '#ECFDF5',
-      button: '#059669',
+      button: '#10B981',
       accent: '#34D399',
-    },
-  },
-  {
-    id: 'Colorful',
-    name: 'Vibrant Creative',
-    desc: 'Palet penuh energi dengan perpaduan ungu & merah muda',
-    colors: {
-      primary: '#EC4899',
-      secondary: '#312E81',
-      background: '#0F172A',
-      text: '#FDF2F8',
-      button: '#EC4899',
-      accent: '#8B5CF6',
-    },
-  },
-  {
-    id: 'Monochrome',
-    name: 'Pure Monochrome',
-    desc: 'Gradasi hitam, abu-abu arang dan putih yang netral',
-    colors: {
-      primary: '#E2E8F0',
-      secondary: '#1E293B',
-      background: '#0A0A0A',
-      text: '#F8FAFC',
-      button: '#334155',
-      accent: '#94A3B8',
-    },
-  },
-  {
-    id: 'Futuristic',
-    name: 'Neon Futuristic',
-    desc: 'Cyan bercahaya dan ungu nebula bernuansa masa depan',
-    colors: {
-      primary: '#06B6D4',
-      secondary: '#1E1B4B',
-      background: '#030712',
-      text: '#F0FDFA',
-      button: '#06B6D4',
-      accent: '#A855F7',
     },
   },
 ];
@@ -130,14 +104,14 @@ export const Step4Palette: React.FC<Step4Props> = ({ data, updateData }) => {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
+    <div className="space-y-6 max-w-4xl mx-auto font-['Plus_Jakarta_Sans',sans-serif]">
       <div className="text-center space-y-1.5 mb-6">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold">
-          <Palette className="w-3.5 h-3.5" />
-          Langkah 4: Live Mockup Palet Warna
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-semibold">
+          <Palette className="w-3.5 h-3.5 text-white" />
+          <span>Langkah 4: Live Mockup Palet Warna</span>
         </div>
         <h2 className="text-2xl font-bold text-white tracking-tight">Preview & Pilihan Palet AI</h2>
-        <p className="text-xs text-slate-400">
+        <p className="text-xs text-zinc-400">
           Lihat langsung perpaduan warna Anda pada komponen website atau pilih palet siap pakai dari AI.
         </p>
       </div>
@@ -146,16 +120,16 @@ export const Step4Palette: React.FC<Step4Props> = ({ data, updateData }) => {
         {/* LEFT: Live Interactive Miniature Mockup */}
         <div className="lg:col-span-6 space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-xs font-bold text-slate-300 flex items-center gap-1.5 uppercase tracking-wider">
-              <Layout className="w-3.5 h-3.5 text-indigo-400" />
+            <h3 className="text-xs font-bold text-zinc-300 flex items-center gap-1.5 uppercase tracking-wider">
+              <Layout className="w-3.5 h-3.5 text-white" />
               <span>Live Website Mockup</span>
             </h3>
-            <span className="text-[10px] text-slate-500 font-mono">Render Realtime</span>
+            <span className="text-[10px] text-zinc-500 font-mono">Render Realtime</span>
           </div>
 
           {/* Miniature Website Mockup Frame */}
           <div
-            className="rounded-2xl p-5 border border-slate-700/80 shadow-2xl transition-all duration-300"
+            className="rounded-2xl p-5 border border-zinc-800 shadow-2xl transition-all duration-300"
             style={{
               backgroundColor: colors.background,
               color: colors.text,
@@ -171,7 +145,7 @@ export const Step4Palette: React.FC<Step4Props> = ({ data, updateData }) => {
               <div className="flex items-center gap-2">
                 <div
                   className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold"
-                  style={{ backgroundColor: colors.primary, color: '#ffffff' }}
+                  style={{ backgroundColor: colors.primary, color: '#000000' }}
                 >
                   {data.siteName.charAt(0) || 'V'}
                 </div>
@@ -189,10 +163,11 @@ export const Step4Palette: React.FC<Step4Props> = ({ data, updateData }) => {
             {/* Hero Mockup */}
             <div className="py-4 space-y-3 text-center sm:text-left">
               <div
-                className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold"
+                className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold border"
                 style={{
                   backgroundColor: `${colors.accent}25`,
                   color: colors.accent,
+                  borderColor: `${colors.accent}40`,
                 }}
               >
                 Kategori: {data.category}
@@ -213,7 +188,7 @@ export const Step4Palette: React.FC<Step4Props> = ({ data, updateData }) => {
                   className="px-4 py-2 rounded-xl text-xs font-bold shadow-md transition"
                   style={{
                     backgroundColor: colors.button,
-                    color: '#ffffff',
+                    color: colors.button === '#FFFFFF' || colors.button.toLowerCase() === '#fff' ? '#000000' : '#ffffff',
                   }}
                 >
                   {data.websiteType === 'Toko Online' ? 'Belanja Sekarang' : 'Mulai Sekarang'}
@@ -259,21 +234,22 @@ export const Step4Palette: React.FC<Step4Props> = ({ data, updateData }) => {
         {/* RIGHT: AI Palettes Preset List */}
         <div className="lg:col-span-6 space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-xs font-bold text-slate-300 flex items-center gap-1.5 uppercase tracking-wider">
-              <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+            <h3 className="text-xs font-bold text-zinc-300 flex items-center gap-1.5 uppercase tracking-wider">
+              <Sparkles className="w-3.5 h-3.5 text-white" />
               <span>Pilihan Palet AI</span>
             </h3>
 
             <button
               type="button"
               onClick={handleRandomizeAIPalette}
-              className="text-xs text-indigo-400 hover:text-indigo-300 font-semibold flex items-center gap-1"
+              className="text-xs text-zinc-300 hover:text-white font-semibold flex items-center gap-1 cursor-pointer"
             >
-              🎨 Acak Palet dengan AI
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Acak Palet</span>
             </button>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[380px] overflow-y-auto pr-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             {palettePresets.map((palette) => {
               const isSelected = data.paletteTheme === palette.id;
 
@@ -281,19 +257,23 @@ export const Step4Palette: React.FC<Step4Props> = ({ data, updateData }) => {
                 <div
                   key={palette.id}
                   onClick={() => handleApplyPalette(palette)}
-                  className={`p-3 rounded-xl border cursor-pointer transition flex flex-col justify-between ${
+                  className={`p-3.5 rounded-xl border cursor-pointer transition flex flex-col justify-between ${
                     isSelected
-                      ? 'bg-[#1e293b] border-indigo-500 shadow-md shadow-indigo-600/20'
-                      : 'bg-[#111827] border-slate-800 hover:border-slate-700 hover:bg-[#182238]'
+                      ? 'bg-zinc-900 border-white shadow-xl ring-1 ring-white/20'
+                      : 'bg-zinc-950 border-zinc-800 hover:border-zinc-700 hover:bg-zinc-900/60'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-bold text-white">{palette.name}</span>
-                    {isSelected && <Check className="w-3.5 h-3.5 text-indigo-400" />}
+                    {isSelected && (
+                      <div className="w-4 h-4 rounded-full bg-white text-black flex items-center justify-center">
+                        <Check className="w-2.5 h-2.5 stroke-[3]" />
+                      </div>
+                    )}
                   </div>
 
                   {/* Swatches preview bar */}
-                  <div className="flex items-center gap-1.5 mb-1.5">
+                  <div className="flex items-center gap-1.5 mb-2">
                     <div
                       className="w-5 h-5 rounded-md border border-white/20 shadow-sm"
                       style={{ backgroundColor: palette.colors.primary }}
@@ -321,7 +301,7 @@ export const Step4Palette: React.FC<Step4Props> = ({ data, updateData }) => {
                     />
                   </div>
 
-                  <p className="text-[10px] text-slate-400 line-clamp-1">{palette.desc}</p>
+                  <p className="text-[10px] text-zinc-400 line-clamp-1">{palette.desc}</p>
                 </div>
               );
             })}

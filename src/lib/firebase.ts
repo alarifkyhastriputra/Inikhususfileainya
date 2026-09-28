@@ -96,8 +96,8 @@ export function setActiveSession(profile: UserProfile | null) {
 
 // Default system settings
 const DEFAULT_SETTINGS: SystemSettings = {
-  requireApprovalForNewUsers: true,
-  defaultCreditsPerUser: 100,
+  requireApprovalForNewUsers: false,
+  defaultCreditsPerUser: 0,
   aiModel: 'gemini-3.8-flash',
   systemNotice: 'Welcome to vimos.ai! Member registrations require admin verification.'
 };
@@ -430,7 +430,7 @@ export async function syncUserProfile(user: User): Promise<UserProfile | null> {
       role,
       status,
       createdAt: new Date().toISOString(),
-      credits: isSuperAdmin ? 999999 : settings.defaultCreditsPerUser,
+      credits: isSuperAdmin ? 999999 : (settings.defaultCreditsPerUser ?? 0),
       lastLogin: new Date().toISOString()
     };
   } else {
@@ -571,16 +571,17 @@ export async function updateUserPasswordByAdmin(uid: string, newPassword: string
   }
 }
 
-// Add Credits by Admin (supports serial code, email, or uid)
+// Add Credits by Admin (supports serial code, email, or uid; mode: 'add' or 'set')
 export async function addCreditsByAdmin(
   identifier: string, 
-  amount: number
+  amount: number,
+  mode: 'add' | 'set' = 'add'
 ): Promise<{ success: boolean; newCredits?: number; message?: string; error?: string }> {
   try {
     const res = await fetch('/api/users/add-credits', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ identifier, amount })
+      body: JSON.stringify({ identifier, amount, mode })
     });
     const data = await res.json();
     if (res.ok && data.success) {
@@ -597,9 +598,9 @@ export async function addCreditsByAdmin(
       }
       return { success: true, newCredits: data.newCredits, message: data.message };
     }
-    return { success: false, error: data.error || 'Gagal menambahkan kredit' };
+    return { success: false, error: data.error || 'Gagal mengatur kredit' };
   } catch (err: any) {
-    return { success: false, error: err.message || 'Koneksi bermasalah saat menambah kredit' };
+    return { success: false, error: err.message || 'Koneksi bermasalah saat mengatur kredit' };
   }
 }
 
@@ -610,7 +611,7 @@ export async function createMemberByAdmin(
   displayName: string, 
   role: UserRole = 'member', 
   status: UserStatus = 'active', 
-  credits: number = 100
+  credits: number = 0
 ): Promise<UserProfile> {
   const normEmail = email.trim().toLowerCase();
   const cleanPass = password.trim();
@@ -625,7 +626,7 @@ export async function createMemberByAdmin(
     role,
     status,
     createdAt: new Date().toISOString(),
-    credits: credits || 100,
+    credits: Number(credits) || 0,
     lastLogin: new Date().toISOString()
   };
 
@@ -696,6 +697,7 @@ export async function deleteUserByAdmin(uid: string): Promise<void> {
 
 // Save or Update Website Project - 100% Online
 export async function saveGeneratedWebsite(site: Partial<GeneratedWebsite> & Omit<GeneratedWebsite, 'id' | 'createdAt'> & { id?: string }): Promise<GeneratedWebsite> {
+  const normAuthorEmail = (site.authorEmail || '').trim().toLowerCase();
   const id = site.id || ('site_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7));
   let newSite: GeneratedWebsite = {
     id,
@@ -706,7 +708,7 @@ export async function saveGeneratedWebsite(site: Partial<GeneratedWebsite> & Omi
     style: site.style || 'Modern',
     html: site.html || '',
     authorId: site.authorId || 'anon',
-    authorEmail: (site.authorEmail || '').trim().toLowerCase(),
+    authorEmail: normAuthorEmail,
     views: site.views || 1,
     isPublic: site.isPublic !== undefined ? site.isPublic : true,
   };
@@ -736,19 +738,22 @@ export async function saveGeneratedWebsite(site: Partial<GeneratedWebsite> & Omi
     console.warn('Failed to save website to Firestore:', e);
   }
 
-  // 3. Save / Update in Local Storage without duplicates
-  try {
-    const raw = localStorage.getItem(LOCAL_SITES_KEY);
-    const sites: GeneratedWebsite[] = raw ? JSON.parse(raw) : [];
-    const existIdx = sites.findIndex(s => s.id === newSite.id);
-    if (existIdx >= 0) {
-      sites[existIdx] = newSite;
-    } else {
-      sites.unshift(newSite);
+  // 3. Save / Update in Local Storage (User-Scoped key to avoid history mixing!)
+  if (normAuthorEmail) {
+    try {
+      const userSitesKey = `vimos_sites_${normAuthorEmail}`;
+      const raw = localStorage.getItem(userSitesKey);
+      const sites: GeneratedWebsite[] = raw ? JSON.parse(raw) : [];
+      const existIdx = sites.findIndex(s => s.id === newSite.id);
+      if (existIdx >= 0) {
+        sites[existIdx] = newSite;
+      } else {
+        sites.unshift(newSite);
+      }
+      localStorage.setItem(userSitesKey, JSON.stringify(sites));
+    } catch (err) {
+      console.error('Local storage site save failed:', err);
     }
-    localStorage.setItem(LOCAL_SITES_KEY, JSON.stringify(sites));
-  } catch (err) {
-    console.error('Local storage site save failed:', err);
   }
 
   return newSite;
@@ -764,16 +769,19 @@ export async function updateWebsiteProject(id: string, updates: Partial<Generate
     if (res.ok) {
       const data = await res.json();
       if (data.success && data.website) {
-        // Update local storage
-        try {
-          const raw = localStorage.getItem(LOCAL_SITES_KEY);
-          const sites: GeneratedWebsite[] = raw ? JSON.parse(raw) : [];
-          const idx = sites.findIndex(s => s.id === id);
-          if (idx >= 0) {
-            sites[idx] = { ...sites[idx], ...data.website };
-            localStorage.setItem(LOCAL_SITES_KEY, JSON.stringify(sites));
-          }
-        } catch {}
+        const email = (data.website.authorEmail || '').trim().toLowerCase();
+        if (email) {
+          try {
+            const userSitesKey = `vimos_sites_${email}`;
+            const raw = localStorage.getItem(userSitesKey);
+            const sites: GeneratedWebsite[] = raw ? JSON.parse(raw) : [];
+            const idx = sites.findIndex(s => s.id === id);
+            if (idx >= 0) {
+              sites[idx] = { ...sites[idx], ...data.website };
+              localStorage.setItem(userSitesKey, JSON.stringify(sites));
+            }
+          } catch {}
+        }
         return data.website;
       }
     }
@@ -781,36 +789,27 @@ export async function updateWebsiteProject(id: string, updates: Partial<Generate
     console.warn('Failed to update website on server:', err);
   }
 
-  // Fallback update local storage
-  try {
-    const raw = localStorage.getItem(LOCAL_SITES_KEY);
-    const sites: GeneratedWebsite[] = raw ? JSON.parse(raw) : [];
-    const idx = sites.findIndex(s => s.id === id);
-    if (idx >= 0) {
-      const updated = { ...sites[idx], ...updates };
-      sites[idx] = updated;
-      localStorage.setItem(LOCAL_SITES_KEY, JSON.stringify(sites));
-      return updated;
-    }
-  } catch {}
-
   return null;
 }
 
-// Get user websites - 100% Online
+// Get user websites - STRICTLY ISOLATED TO THIS USER
 export async function getUserWebsites(userEmail: string): Promise<GeneratedWebsite[]> {
-  const isAdm = isAdminEmail(userEmail);
+  const normEmail = (userEmail || '').trim().toLowerCase();
+  if (!normEmail) return [];
   const combined: GeneratedWebsite[] = [];
 
-  // 1. Fetch from Online Server API
+  // 1. Fetch from Online Server API - query strictly by user's email
   try {
-    const res = await fetch(`/api/websites?email=${encodeURIComponent(userEmail)}&role=${isAdm ? 'admin' : ''}`);
+    const res = await fetch(`/api/websites?email=${encodeURIComponent(normEmail)}`);
     if (res.ok) {
       const data = await res.json();
       if (data.success && Array.isArray(data.websites)) {
         data.websites.forEach((site: GeneratedWebsite) => {
-          if (!combined.some(c => c.id === site.id)) {
-            combined.push(site);
+          // Double check: strictly ONLY this user's websites!
+          if ((site.authorEmail || '').trim().toLowerCase() === normEmail) {
+            if (!combined.some(c => c.id === site.id)) {
+              combined.push(site);
+            }
           }
         });
       }
@@ -819,11 +818,12 @@ export async function getUserWebsites(userEmail: string): Promise<GeneratedWebsi
     console.warn('Online websites fetch error:', err);
   }
 
-  // 2. Merge with Local Storage sites (and background sync to server)
+  // 2. User-Scoped Local Storage Cache (never mix with other users!)
+  const userSitesKey = `vimos_sites_${normEmail}`;
   try {
-    const raw = localStorage.getItem(LOCAL_SITES_KEY);
+    const raw = localStorage.getItem(userSitesKey);
     const localSites: GeneratedWebsite[] = raw ? JSON.parse(raw) : [];
-    const relevantLocal = localSites.filter(s => isAdm || s.authorEmail.toLowerCase() === userEmail.toLowerCase());
+    const relevantLocal = localSites.filter(s => (s.authorEmail || '').trim().toLowerCase() === normEmail);
 
     for (const ls of relevantLocal) {
       if (!combined.some(c => c.id === ls.id)) {
@@ -837,15 +837,13 @@ export async function getUserWebsites(userEmail: string): Promise<GeneratedWebsi
       }
     }
 
-    localStorage.setItem(LOCAL_SITES_KEY, JSON.stringify(combined));
+    localStorage.setItem(userSitesKey, JSON.stringify(combined));
   } catch {}
 
-  // 3. Firestore backup if empty
+  // 3. Firestore fallback if empty
   if (combined.length === 0) {
     try {
-      const q = isAdm
-        ? collection(db, 'websites')
-        : query(collection(db, 'websites'), where('authorEmail', '==', userEmail));
+      const q = query(collection(db, 'websites'), where('authorEmail', '==', normEmail));
       const snap = await withTimeout(getDocs(q), 1500, null as any);
       if (snap && !snap.empty) {
         return snap.docs.map((d: any) => d.data() as GeneratedWebsite);
@@ -856,6 +854,23 @@ export async function getUserWebsites(userEmail: string): Promise<GeneratedWebsi
   }
 
   return combined;
+}
+
+// Get all platform websites for Admin Dashboard only
+export async function getAllWebsitesForAdmin(adminEmail: string): Promise<GeneratedWebsite[]> {
+  const normEmail = (adminEmail || '').trim().toLowerCase();
+  try {
+    const res = await fetch(`/api/websites?all=true&email=${encodeURIComponent(normEmail)}&role=admin`);
+    if (res.ok) {
+      const data = await res.json();
+      if (data.success && Array.isArray(data.websites)) {
+        return data.websites;
+      }
+    }
+  } catch (err) {
+    console.warn('Failed to fetch all websites for admin:', err);
+  }
+  return [];
 }
 
 // Deduct credits when user creates a website (100 credits per generation)
@@ -1066,11 +1081,25 @@ export async function deleteTutorialVideo(id: string): Promise<boolean> {
 }
 
 // Delete website - 100% Online
-export async function deleteWebsite(id: string): Promise<void> {
+export async function deleteWebsite(id: string, userEmail?: string): Promise<void> {
   // 1. Online API delete
   fetch(`/api/websites/${encodeURIComponent(id)}`, { method: 'DELETE' }).catch(() => {});
 
-  // 2. Local storage delete
+  // 2. User-scoped Local storage delete
+  if (userEmail) {
+    const norm = userEmail.trim().toLowerCase();
+    try {
+      const userSitesKey = `vimos_sites_${norm}`;
+      const raw = localStorage.getItem(userSitesKey);
+      if (raw) {
+        const parsed: GeneratedWebsite[] = JSON.parse(raw);
+        const filtered = parsed.filter(s => s.id !== id);
+        localStorage.setItem(userSitesKey, JSON.stringify(filtered));
+      }
+    } catch {}
+  }
+
+  // 3. Fallback check on old legacy key if exists
   try {
     const raw = localStorage.getItem(LOCAL_SITES_KEY);
     if (raw) {
@@ -1080,7 +1109,7 @@ export async function deleteWebsite(id: string): Promise<void> {
     }
   } catch {}
 
-  // 3. Firestore delete
+  // 4. Firestore delete
   try {
     const ref = doc(db, 'websites', id);
     await deleteDoc(ref);
