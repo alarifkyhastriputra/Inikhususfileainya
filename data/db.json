@@ -1,0 +1,110 @@
+{
+  "users": [
+    {
+      "uid": "usr_1790523796570_z7ug2",
+      "email": "member@gmail.com",
+      "password": "member123",
+      "displayName": "member",
+      "role": "member",
+      "status": "active",
+      "createdAt": "2026-09-27T15:43:16.570Z",
+      "credits": 50,
+      "lastLogin": "2026-09-27T15:46:37.595Z",
+      "serialCode": "VMS-1002"
+    },
+    {
+      "uid": "usr_1790522847293_dozf4",
+      "email": "shsbs@gmail.com",
+      "displayName": "shsbs",
+      "password": "sjsjs",
+      "role": "member",
+      "status": "active",
+      "createdAt": "2026-09-27T15:27:27.294Z",
+      "credits": 50,
+      "lastLogin": "2026-09-27T15:27:27.294Z",
+      "serialCode": "VMS-1003"
+    },
+    {
+      "uid": "usr_putrikeren_seed",
+      "email": "putrikeren@gmail.com",
+      "displayName": "Putri Keren",
+      "password": "putri123",
+      "role": "member",
+      "status": "active",
+      "createdAt": "2026-09-27T14:15:41.843Z",
+      "credits": 100,
+      "lastLogin": "2026-09-27T14:24:20.181Z",
+      "serialCode": "VMS-1004"
+    },
+    {
+      "uid": "admin_0_nocteos67_gmail_com",
+      "email": "nocteos67@gmail.com",
+      "displayName": "Super Admin (nocteos67)",
+      "password": "admin",
+      "role": "admin",
+      "status": "active",
+      "createdAt": "2026-09-27T14:15:41.843Z",
+      "credits": 999999,
+      "lastLogin": "2026-09-27T14:15:41.844Z",
+      "serialCode": "VMS-0001"
+    },
+    {
+      "uid": "admin_1_nocteos60_gmail_com",
+      "email": "nocteos60@gmail.com",
+      "displayName": "Super Admin (nocteos60)",
+      "password": "albky123",
+      "role": "admin",
+      "status": "active",
+      "createdAt": "2026-09-27T14:15:41.844Z",
+      "credits": 999999,
+      "lastLogin": "2026-09-27T15:47:55.543Z",
+      "serialCode": "VMS-0002"
+    },
+    {
+      "uid": "admin_2_hasbullahbeloh27_gmail_com",
+      "email": "hasbullahbeloh27@gmail.com",
+      "displayName": "Super Admin (hasbullahbeloh27)",
+      "password": "admin",
+      "role": "admin",
+      "status": "active",
+      "createdAt": "2026-09-27T14:15:41.844Z",
+      "credits": 999999,
+      "lastLogin": "2026-09-27T14:15:41.844Z",
+      "serialCode": "VMS-0003"
+    }
+  ],
+  "websites": [
+    {
+      "id": "site_vimos_fashion_store",
+      "title": "Vimos Apparel - Streetwear Store",
+      "prompt": "Toko online pakaian modern streetwear dengan katalog produk dan tombol order via WhatsApp.",
+      "category": "Toko Online",
+      "style": "Modern Dark",
+      "html": "<!DOCTYPE html><html lang=\"id\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Vimos Apparel</title><script src=\"https://cdn.tailwindcss.com\"></script><link href=\"https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap\" rel=\"stylesheet\"><style>body{font-family:'Plus Jakarta Sans',sans-serif;}</style></head><body class=\"bg-slate-950 text-slate-100 min-h-screen\"><nav class=\"sticky top-0 z-50 bg-slate-950/90 backdrop-blur-md border-b border-slate-800 px-6 py-4 flex items-center justify-between\"><div class=\"flex items-center gap-2\"><div class=\"w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-500 to-cyan-400 flex items-center justify-center font-bold text-white\">V</div><span class=\"font-extrabold text-xl tracking-tight text-white\">Vimos<span class=\"text-indigo-400\">Store</span></span></div><div class=\"flex items-center gap-4 text-xs font-semibold\"><a href=\"#katalog\" class=\"text-slate-300 hover:text-white\">Katalog</a><a href=\"https://wa.me/6281234567890?text=Halo%20VimosStore,%20saya%20tertarik%20dengan%20produk%20Anda\" target=\"_blank\" class=\"px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold rounded-xl transition\">Order WhatsApp</a></div></nav><header class=\"max-w-6xl mx-auto px-6 py-16 text-center\"><span class=\"px-3.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-bold uppercase tracking-wider\">Koleksi Terbaru 2026</span><h1 class=\"text-4xl md:text-6xl font-black text-white mt-4 tracking-tight\">Gaya Modern, Kualitas Maksimal</h1><p class=\"text-slate-400 text-sm md:text-base max-w-xl mx-auto mt-4\">Pakaian streetwear premium dengan bahan katun combed 24s adem dan potongan oversize nyaman untuk aktivitas harian.</p><div class=\"mt-8 flex justify-center gap-3\"><a href=\"#katalog\" class=\"px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-sm transition\">Lihat Katalog</a><a href=\"https://wa.me/6281234567890\" target=\"_blank\" class=\"px-6 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-xl text-sm transition\">Konsultasi Ukuran</a></div></header><section id=\"katalog\" class=\"max-w-6xl mx-auto px-6 py-12\"><h2 class=\"text-2xl font-bold text-white mb-8 text-center\">Produk Pilihan</h2><div class=\"grid grid-cols-1 md:grid-cols-3 gap-6\"><div class=\"bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-indigo-500/50 transition\"><img src=\"https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&auto=format&fit=crop&q=80\" alt=\"Kaos\" class=\"w-full h-64 object-cover\"><div class=\"p-5\"><span class=\"text-xs text-indigo-400 font-semibold\">T-Shirt Oversize</span><h3 class=\"text-base font-bold text-white mt-1\">Kaos Polos Heavyweight Black</h3><div class=\"flex items-center justify-between mt-4\"><span class=\"text-lg font-black text-white\">Rp 129.000</span><a href=\"https://wa.me/6281234567890?text=Halo%20VimosStore,%20saya%20mau%20order%20Kaos%20Polos%20Rp129.000\" target=\"_blank\" class=\"px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-xs rounded-lg transition\">Beli via WA</a></div></div></div><div class=\"bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-indigo-500/50 transition\"><img src=\"https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=800&auto=format&fit=crop&q=80\" alt=\"Hoodie\" class=\"w-full h-64 object-cover\"><div class=\"p-5\"><span class=\"text-xs text-indigo-400 font-semibold\">Outerwear</span><h3 class=\"text-base font-bold text-white mt-1\">Hoodie Fleece Street Noir</h3><div class=\"flex items-center justify-between mt-4\"><span class=\"text-lg font-black text-white\">Rp 249.000</span><a href=\"https://wa.me/6281234567890?text=Halo%20VimosStore,%20saya%20mau%20order%20Hoodie%20Fleece%20Rp249.000\" target=\"_blank\" class=\"px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-xs rounded-lg transition\">Beli via WA</a></div></div></div><div class=\"bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-indigo-500/50 transition\"><img src=\"https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=800&auto=format&fit=crop&q=80\" alt=\"Chino\" class=\"w-full h-64 object-cover\"><div class=\"p-5\"><span class=\"text-xs text-indigo-400 font-semibold\">Pants</span><h3 class=\"text-base font-bold text-white mt-1\">Celana Chino Slim Stretch</h3><div class=\"flex items-center justify-between mt-4\"><span class=\"text-lg font-black text-white\">Rp 189.000</span><a href=\"https://wa.me/6281234567890?text=Halo%20VimosStore,%20saya%20mau%20order%20Celana%20Chino%20Rp189.000\" target=\"_blank\" class=\"px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-xs rounded-lg transition\">Beli via WA</a></div></div></div></div></section><footer class=\"border-t border-slate-800 mt-20 py-8 text-center text-xs text-slate-500\"><p>© 2026 VimosStore. Dibuat dengan vimos.ai Builder.</p></footer></body></html>",
+      "createdAt": "2026-09-27T14:30:00.000Z",
+      "authorId": "admin_0",
+      "authorEmail": "hasbullahbeloh27@gmail.com",
+      "views": 1,
+      "isPublic": true
+    },
+    {
+      "id": "site_senja_coffee",
+      "title": "Kopi Senja & Eatery",
+      "prompt": "Website profil kedai kopi dan cafe aesthetic dengan menu favorit dan reservasi WhatsApp.",
+      "category": "Kuliner / Kafe",
+      "style": "Warm Minimalist",
+      "html": "<!DOCTYPE html><html lang=\"id\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Kopi Senja & Eatery</title><script src=\"https://cdn.tailwindcss.com\"></script><link href=\"https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap\" rel=\"stylesheet\"><style>body{font-family:'Plus Jakarta Sans',sans-serif;}</style></head><body class=\"bg-[#0f0d0b] text-[#f4efe6] min-h-screen\"><nav class=\"sticky top-0 z-50 bg-[#0f0d0b]/90 backdrop-blur-md border-b border-[#2d241d] px-6 py-4 flex items-center justify-between\"><div class=\"flex items-center gap-2\"><span class=\"text-2xl\">☕</span><span class=\"font-extrabold text-xl tracking-tight text-amber-100\">Kopi<span class=\"text-amber-500\">Senja</span></span></div><a href=\"https://wa.me/6281234567890?text=Halo%20Kopi%20Senja,%20saya%20mau%20reservasi%20meja\" target=\"_blank\" class=\"px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-xl text-xs transition\">Reservasi Meja</a></nav><header class=\"max-w-4xl mx-auto px-6 py-20 text-center\"><span class=\"text-xs text-amber-500 uppercase tracking-widest font-semibold\">Tempat Santai Terbaik di Kota</span><h1 class=\"text-4xl md:text-6xl font-black text-amber-50 mt-3\">Secangkir Ketenangan di Setiap Tegukan</h1><p class=\"text-[#a89b8d] mt-4 text-sm md:text-base max-w-lg mx-auto\">Biji kopi arabika pilihan dari pegunungan Nusantara yang dipanggang segar dengan sentuhan barista berpengalaman.</p><div class=\"mt-8 flex justify-center gap-3\"><a href=\"#menu\" class=\"px-6 py-3 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-xl text-sm transition\">Lihat Menu Digital</a><a href=\"https://wa.me/6281234567890\" target=\"_blank\" class=\"px-6 py-3 bg-[#241c16] hover:bg-[#33271f] text-amber-200 font-bold rounded-xl text-sm border border-amber-900/50 transition\">Hubungi Barista</a></div></header><section id=\"menu\" class=\"max-w-5xl mx-auto px-6 py-12\"><h2 class=\"text-2xl font-bold text-amber-100 mb-8 text-center\">Menu Andalan Kami</h2><div class=\"grid grid-cols-1 md:grid-cols-2 gap-4\"><div class=\"p-5 bg-[#181310] border border-[#2d241d] rounded-2xl flex items-center justify-between\"><div><h3 class=\"font-bold text-amber-100 text-base\">Kopi Susu Gula Aren Asli</h3><p class=\"text-xs text-[#8c7e71] mt-0.5\">Espresso blend, susu segar, dan gula aren organik cair.</p></div><span class=\"text-amber-400 font-bold text-sm shrink-0 ml-4\">Rp 22.000</span></div><div class=\"p-5 bg-[#181310] border border-[#2d241d] rounded-2xl flex items-center justify-between\"><div><h3 class=\"font-bold text-amber-100 text-base\">Caramel Macchiato Chill</h3><p class=\"text-xs text-[#8c7e71] mt-0.5\">Sentuhan karamel manis gurih dengan foam susu lembut.</p></div><span class=\"text-amber-400 font-bold text-sm shrink-0 ml-4\">Rp 28.000</span></div><div class=\"p-5 bg-[#181310] border border-[#2d241d] rounded-2xl flex items-center justify-between\"><div><h3 class=\"font-bold text-amber-100 text-base\">Manual Brew V60 Flores Bajawa</h3><p class=\"text-xs text-[#8c7e71] mt-0.5\">Single origin dengan aroma floral, citrus, dan body seimbang.</p></div><span class=\"text-amber-400 font-bold text-sm shrink-0 ml-4\">Rp 25.000</span></div><div class=\"p-5 bg-[#181310] border border-[#2d241d] rounded-2xl flex items-center justify-between\"><div><h3 class=\"font-bold text-amber-100 text-base\">Croissant Cokelat Mentega</h3><p class=\"text-xs text-[#8c7e71] mt-0.5\">Pastry renyah butter Prancis dengan lelehan cokelat Belgia.</p></div><span class=\"text-amber-400 font-bold text-sm shrink-0 ml-4\">Rp 24.000</span></div></div></section><footer class=\"border-t border-[#2d241d] mt-16 py-6 text-center text-xs text-[#73665a]\"><p>© 2026 Kopi Senja & Eatery. Powered by vimos.ai</p></footer></body></html>",
+      "createdAt": "2026-09-27T14:35:00.000Z",
+      "authorId": "admin_1",
+      "authorEmail": "putrikeren@gmail.com",
+      "views": 1,
+      "isPublic": true
+    }
+  ],
+  "settings": {
+    "requireApprovalForNewUsers": false,
+    "defaultCreditsPerUser": 50,
+    "aiModel": "gemini-3.8-flash",
+    "systemNotice": "Selamat datang di vimos.ai platform!"
+  }
+}

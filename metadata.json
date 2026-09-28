@@ -1,0 +1,6 @@
+{
+  "name": "vimos.ai",
+  "description": "vimos.ai - AI-Powered Custom Website Generator & Builder",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
