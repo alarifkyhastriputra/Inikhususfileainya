@@ -29,11 +29,22 @@ export interface GeneratedWebsite {
   isPublic?: boolean;
 }
 
+export interface BackgroundMusicSettings {
+  enabled: boolean;
+  title: string;
+  artist?: string;
+  videoUrl: string; // YouTube or YouTube Music URL
+  volume: number; // 0 - 100
+  autoplay: boolean;
+  loop: boolean;
+}
+
 export interface SystemSettings {
   requireApprovalForNewUsers: boolean;
   defaultCreditsPerUser: number;
   aiModel: string;
   systemNotice?: string;
+  bgMusic?: BackgroundMusicSettings;
 }
 
 export interface GenerationTemplate {

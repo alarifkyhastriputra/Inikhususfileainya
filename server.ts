@@ -680,10 +680,41 @@ app.post('/api/settings', (req: Request, res: Response) => {
   res.json({ success: true, settings: dbData.settings });
 });
 
+// 8b. Background Music Endpoints (Admin GUI & Members)
+app.get('/api/music', (_req: Request, res: Response) => {
+  try {
+    const dbData = getDatabase();
+    res.json({ success: true, bgMusic: dbData.settings?.bgMusic || null });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/admin/music', (req: Request, res: Response) => {
+  try {
+    const dbData = getDatabase();
+    const { enabled, title, artist, videoUrl, volume, autoplay, loop } = req.body;
+    dbData.settings.bgMusic = {
+      enabled: enabled !== undefined ? Boolean(enabled) : true,
+      title: title ? String(title).trim() : 'Background Music',
+      artist: artist ? String(artist).trim() : 'Vimos Studio',
+      videoUrl: videoUrl ? String(videoUrl).trim() : '',
+      volume: typeof volume === 'number' ? Math.max(0, Math.min(100, volume)) : 30,
+      autoplay: autoplay !== undefined ? Boolean(autoplay) : true,
+      loop: loop !== undefined ? Boolean(loop) : true
+    };
+    saveDatabase(dbData);
+    console.log(`[Music] Admin updated background music: ${dbData.settings.bgMusic.title} (${dbData.settings.bgMusic.videoUrl})`);
+    res.json({ success: true, bgMusic: dbData.settings.bgMusic });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 function getYouTubeVideoIdServer(url: string): string {
   if (!url) return '';
   const clean = url.trim();
-  const match = clean.match(/(?:youtu\.be\/|v\/|e\/|u\/\w\/|embed\/|shorts\/|watch\?v=|\&v=)([^#\&\?]*)/);
+  const match = clean.match(/(?:youtu\.be\/|v\/|e\/|u\/\w\/|embed\/|shorts\/|watch\?v=|\&v=|music\.youtube\.com\/watch\?v=)([^#\&\?]*)/);
   if (match && match[1] && match[1].length === 11) {
     return match[1];
   }
