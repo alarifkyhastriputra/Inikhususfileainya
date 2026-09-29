@@ -9,7 +9,6 @@ import {
   addCreditsByAdmin,
   getSystemSettings, 
   updateSystemSettings, 
-  updateBackgroundMusic,
   isAdminEmail,
   getTutorialVideos,
   addTutorialVideo,
@@ -42,17 +41,8 @@ import {
   Zap,
   Youtube,
   Edit3,
-  Sliders,
-  Music,
-  Volume2,
-  VolumeX,
-  Play,
-  Pause,
-  Repeat,
-  Sparkles,
-  ExternalLink
+  Sliders
 } from 'lucide-react';
-import { extractYouTubeId } from './BackgroundMusicPlayer';
 
 interface AdminDashboardModalProps {
   isOpen: boolean;
@@ -67,21 +57,10 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({
   currentUserProfile,
   websites
 }) => {
-  const [activeTab, setActiveTab] = useState<'users' | 'quick_credit' | 'add_user' | 'tutorials' | 'music' | 'settings' | 'all_sites'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'quick_credit' | 'add_user' | 'tutorials' | 'settings' | 'all_sites'>('users');
   const [users, setUsers] = useState<UserProfile[]>([]);
   const [tutorials, setTutorials] = useState<TutorialVideo[]>([]);
   const [allCommunityWebsites, setAllCommunityWebsites] = useState<GeneratedWebsite[]>([]);
-
-  // Music Admin State
-  const [musicEnabled, setMusicEnabled] = useState(true);
-  const [musicUrl, setMusicUrl] = useState('https://music.youtube.com/watch?v=jfKfPfyJRdk');
-  const [musicTitle, setMusicTitle] = useState('Lofi Chill Beats - Ambient Coding');
-  const [musicArtist, setMusicArtist] = useState('Vimos Studio');
-  const [musicVolume, setMusicVolume] = useState(30);
-  const [musicLoop, setMusicLoop] = useState(true);
-  const [musicAutoplay, setMusicAutoplay] = useState(true);
-  const [isSavingMusic, setIsSavingMusic] = useState(false);
-  const [testPlaying, setTestPlaying] = useState(false);
   
   // Tutorial Modal State
   const [showTutModal, setShowTutModal] = useState(false);
@@ -153,57 +132,7 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({
     setSettings(sysSettings);
     setTutorials(vids);
     setAllCommunityWebsites(allSites);
-
-    if (sysSettings.bgMusic) {
-      setMusicEnabled(sysSettings.bgMusic.enabled ?? true);
-      setMusicUrl(sysSettings.bgMusic.videoUrl || '');
-      setMusicTitle(sysSettings.bgMusic.title || 'Lofi Chill Beats - Ambient Coding');
-      setMusicArtist(sysSettings.bgMusic.artist || 'Vimos Studio');
-      setMusicVolume(typeof sysSettings.bgMusic.volume === 'number' ? sysSettings.bgMusic.volume : 30);
-      setMusicLoop(sysSettings.bgMusic.loop ?? true);
-      setMusicAutoplay(sysSettings.bgMusic.autoplay ?? true);
-    }
-
     setLoading(false);
-  };
-
-  const handleSaveMusicSettings = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    if (!musicUrl.trim()) {
-      showNotification('URL musik YouTube atau YouTube Music wajib diisi.', 'error');
-      return;
-    }
-
-    const vidId = extractYouTubeId(musicUrl);
-    if (!vidId) {
-      showNotification('Link tidak valid! Pastikan link dari YouTube atau YouTube Music.', 'error');
-      return;
-    }
-
-    setIsSavingMusic(true);
-    try {
-      const updatedMusic = {
-        enabled: musicEnabled,
-        videoUrl: musicUrl.trim(),
-        title: musicTitle.trim() || 'Musik Latar',
-        artist: musicArtist.trim() || 'Vimos AI',
-        volume: musicVolume,
-        loop: musicLoop,
-        autoplay: musicAutoplay
-      };
-
-      const res = await updateBackgroundMusic(updatedMusic);
-      if (res) {
-        window.dispatchEvent(new CustomEvent('vimos_bg_music_updated', { detail: res }));
-        showNotification('🎵 Pengaturan musik latar berhasil disimpan & diterapkan ke seluruh web!', 'success');
-      } else {
-        showNotification('Gagal menyimpan musik latar. Coba periksa koneksi.', 'error');
-      }
-    } catch {
-      showNotification('Terjadi kesalahan saat menyimpan musik.', 'error');
-    } finally {
-      setIsSavingMusic(false);
-    }
   };
 
   const showNotification = (msg: string, type: 'success' | 'error' | 'info' = 'success') => {
@@ -617,19 +546,6 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({
           >
             <Youtube className="w-4 h-4 text-white" />
             <span>🎬 Video Tutorial ({tutorials.length})</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab('music')}
-            className={`pb-3 px-3 text-xs font-bold border-b-2 flex items-center gap-2 transition shrink-0 cursor-pointer ${
-              activeTab === 'music'
-                ? 'border-white text-white bg-zinc-900 rounded-t-xl'
-                : 'border-transparent text-zinc-400 hover:text-white'
-            }`}
-          >
-            <Music className="w-4 h-4 text-white" />
-            <span>🎵 Musik Latar (BGM)</span>
           </button>
 
           <button
@@ -1473,335 +1389,7 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({
             </div>
           )}
 
-          {/* TAB: PENGATURAN MUSIK LATAR (BGM WEB) */}
-          {activeTab === 'music' && (
-            <div className="space-y-6">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-zinc-800">
-                <div>
-                  <h3 className="text-base font-bold text-white flex items-center gap-2">
-                    <Music className="w-5 h-5 text-white" />
-                    <span>Pengaturan Musik Latar Website (Looping Audio)</span>
-                  </h3>
-                  <p className="text-xs text-zinc-400 mt-1">
-                    Admin dapat menambahkan atau mengubah musik latar menggunakan tautan <strong>YouTube</strong> atau <strong>YouTube Music</strong>. Musik akan berputar secara berulang (looping) untuk seluruh member dan pengunjung.
-                  </p>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={handleSaveMusicSettings}
-                  disabled={isSavingMusic}
-                  className="px-5 py-2.5 bg-white text-black hover:bg-zinc-200 rounded-xl text-xs font-bold flex items-center gap-2 shadow-xl transition cursor-pointer shrink-0 disabled:opacity-50"
-                >
-                  {isSavingMusic ? (
-                    <>
-                      <div className="w-3.5 h-3.5 border-2 border-black border-t-transparent rounded-full animate-spin" />
-                      <span>Menyimpan...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Check className="w-4 h-4 text-black" />
-                      <span>Simpan & Terapkan Musik</span>
-                    </>
-                  )}
-                </button>
-              </div>
-
-              {/* Status Sakelar Utama */}
-              <div className="bg-zinc-950 border border-zinc-800 rounded-2xl p-5 flex items-center justify-between gap-4">
-                <div className="space-y-1">
-                  <div className="text-sm font-bold text-white flex items-center gap-2">
-                    <span>Status Musik Latar Website</span>
-                    <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
-                      musicEnabled ? 'bg-white text-black' : 'bg-zinc-800 text-zinc-400'
-                    }`}>
-                      {musicEnabled ? 'AKTIF (ON)' : 'NONAKTIF (OFF)'}
-                    </span>
-                  </div>
-                  <p className="text-xs text-zinc-400">
-                    Jika aktif, seluruh member dan pengunjung website akan mendengarkan musik latar ini dalam mode loop.
-                  </p>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => setMusicEnabled(!musicEnabled)}
-                  className={`w-14 h-7 rounded-full transition-colors relative cursor-pointer shrink-0 ${
-                    musicEnabled ? 'bg-white' : 'bg-zinc-800'
-                  }`}
-                >
-                  <span
-                    className={`block w-6 h-6 rounded-full transition-transform absolute top-0.5 ${
-                      musicEnabled
-                        ? 'translate-x-7 bg-black'
-                        : 'translate-x-1 bg-zinc-500'
-                    }`}
-                  />
-                </button>
-              </div>
-
-              {/* Form Input Link YouTube / YouTube Music */}
-              <div className="bg-zinc-950 border border-zinc-800 rounded-2xl p-5 space-y-4">
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-white flex items-center gap-2">
-                    <Youtube className="w-4 h-4 text-white" />
-                    <span>Link Musik (YouTube atau YouTube Music)</span>
-                  </label>
-                  <p className="text-[11px] text-zinc-400">
-                    Tempelkan link lagu dari YouTube biasa (contoh: <code className="text-zinc-300 font-mono">https://youtu.be/...</code> atau <code className="text-zinc-300 font-mono">https://www.youtube.com/watch?v=...</code>) maupun YouTube Music (contoh: <code className="text-zinc-300 font-mono">https://music.youtube.com/watch?v=...</code>).
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <input
-                    type="text"
-                    value={musicUrl}
-                    onChange={(e) => setMusicUrl(e.target.value)}
-                    placeholder="https://music.youtube.com/watch?v=... atau https://youtu.be/..."
-                    className="w-full bg-zinc-900 border border-zinc-800 focus:border-white rounded-xl px-4 py-2.5 text-xs text-white placeholder-zinc-500 outline-none font-mono"
-                  />
-
-                  {/* Deteksi Link Valid */}
-                  {(() => {
-                    const detectedId = extractYouTubeId(musicUrl);
-                    if (detectedId) {
-                      return (
-                        <div className="flex items-center gap-2 p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-xs">
-                          <CheckCircle className="w-4 h-4 text-white shrink-0" />
-                          <span className="text-zinc-300">
-                            Link Musik Valid! ID Video: <strong className="text-white font-mono">{detectedId}</strong>
-                          </span>
-                          <span className="ml-auto text-[10px] px-2 py-0.5 rounded bg-zinc-800 text-zinc-300 font-mono">
-                            {musicUrl.includes('music.youtube.com') ? 'YouTube Music' : 'YouTube'}
-                          </span>
-                        </div>
-                      );
-                    } else if (musicUrl.trim()) {
-                      return (
-                        <div className="flex items-center gap-2 p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-xs text-zinc-400">
-                          <AlertTriangle className="w-4 h-4 text-zinc-400 shrink-0" />
-                          <span>Link tidak terdeteksi sebagai URL YouTube / YouTube Music yang valid.</span>
-                        </div>
-                      );
-                    }
-                    return null;
-                  })()}
-                </div>
-
-                {/* Preset Musik Siap Pakai */}
-                <div className="pt-3 border-t border-zinc-900 space-y-2">
-                  <div className="text-xs font-bold text-white flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-white" />
-                    <span>Pilihan Preset Musik Rekomendasi (Klik 1x untuk Memilih):</span>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {[
-                      {
-                        title: 'Lofi Chill Beats (Aesthetic Coding)',
-                        artist: 'Lofi Girl / ChilledCow',
-                        url: 'https://music.youtube.com/watch?v=jfKfPfyJRdk'
-                      },
-                      {
-                        title: 'Calm Ambient Piano (Fokus & Santai)',
-                        artist: 'Relaxing Piano Beats',
-                        url: 'https://music.youtube.com/watch?v=1fueZCTYkpA'
-                      },
-                      {
-                        title: 'Cyberpunk Synthwave (Modern Tech)',
-                        artist: 'Synthwave Radio',
-                        url: 'https://music.youtube.com/watch?v=4xDzrJKXOOY'
-                      },
-                      {
-                        title: 'Coffee Shop Acoustic BGM (Hangat)',
-                        artist: 'Acoustic Guitar Cafe',
-                        url: 'https://music.youtube.com/watch?v=lTRiuFIWV54'
-                      }
-                    ].map((preset, idx) => (
-                      <button
-                        key={idx}
-                        type="button"
-                        onClick={() => {
-                          setMusicUrl(preset.url);
-                          setMusicTitle(preset.title);
-                          setMusicArtist(preset.artist);
-                          showNotification(`Preset "${preset.title}" dipilih!`, 'info');
-                        }}
-                        className={`p-2.5 rounded-xl border text-left transition flex items-center justify-between cursor-pointer ${
-                          extractYouTubeId(musicUrl) === extractYouTubeId(preset.url)
-                            ? 'bg-zinc-900 border-white text-white shadow'
-                            : 'bg-zinc-950 border-zinc-800 hover:border-zinc-700 text-zinc-300'
-                        }`}
-                      >
-                        <div className="truncate pr-2">
-                          <div className="text-xs font-bold text-white truncate">{preset.title}</div>
-                          <div className="text-[10px] text-zinc-500 font-mono truncate">{preset.artist}</div>
-                        </div>
-                        <Play className="w-3.5 h-3.5 shrink-0 opacity-70" />
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Detail Musik & Volume */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Judul & Artis */}
-                <div className="bg-zinc-950 border border-zinc-800 rounded-2xl p-5 space-y-3">
-                  <div className="text-xs font-bold text-white">Informasi Lagu / Trek</div>
-                  
-                  <div className="space-y-1">
-                    <label className="text-[11px] text-zinc-400">Judul Musik</label>
-                    <input
-                      type="text"
-                      value={musicTitle}
-                      onChange={(e) => setMusicTitle(e.target.value)}
-                      placeholder="Contoh: Lofi Chill Beats"
-                      className="w-full bg-zinc-900 border border-zinc-800 focus:border-white rounded-xl px-3 py-2 text-xs text-white outline-none"
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="text-[11px] text-zinc-400">Nama Artis / Pembuat</label>
-                    <input
-                      type="text"
-                      value={musicArtist}
-                      onChange={(e) => setMusicArtist(e.target.value)}
-                      placeholder="Contoh: Vimos Studio"
-                      className="w-full bg-zinc-900 border border-zinc-800 focus:border-white rounded-xl px-3 py-2 text-xs text-white outline-none"
-                    />
-                  </div>
-                </div>
-
-                {/* Volume & Opsi Loop */}
-                <div className="bg-zinc-950 border border-zinc-800 rounded-2xl p-5 space-y-3">
-                  <div className="text-xs font-bold text-white">Volume & Perilaku Putar</div>
-
-                  {/* Volume Slider */}
-                  <div className="space-y-1.5">
-                    <div className="flex items-center justify-between text-xs text-zinc-400 font-mono">
-                      <span className="flex items-center gap-1.5 text-white">
-                        <Volume2 className="w-4 h-4 text-white" />
-                        <span>Volume Default</span>
-                      </span>
-                      <span className="font-bold text-white">{musicVolume}%</span>
-                    </div>
-                    <input
-                      type="range"
-                      min="5"
-                      max="100"
-                      value={musicVolume}
-                      onChange={(e) => setMusicVolume(Number(e.target.value))}
-                      className="w-full h-1.5 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-white"
-                    />
-                    <div className="text-[10px] text-zinc-500">
-                      Rekomendasi 25%–35% agar tidak terlalu kencang saat member membaca web.
-                    </div>
-                  </div>
-
-                  {/* Loop Option */}
-                  <div className="pt-2 border-t border-zinc-900 flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <div className="text-xs font-bold text-white flex items-center gap-1.5">
-                        <Repeat className="w-3.5 h-3.5 text-white" />
-                        <span>Putar Berulang Terus (Infinite Loop)</span>
-                      </div>
-                      <div className="text-[10px] text-zinc-400">
-                        Lagu akan memutar ulang otomatis tanpa henti.
-                      </div>
-                    </div>
-                    <span className="px-2 py-0.5 rounded bg-white text-black font-bold text-[10px] font-mono">
-                      LOOP AKTIF
-                    </span>
-                  </div>
-
-                  {/* Autoplay Option */}
-                  <div className="pt-2 border-t border-zinc-900 flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <div className="text-xs font-bold text-white">
-                        Otomatis Putar Saat Halaman Dimuat
-                      </div>
-                      <div className="text-[10px] text-zinc-400">
-                        Mulai berputar saat pengunjung berinteraksi dengan website.
-                      </div>
-                    </div>
-                    <input
-                      type="checkbox"
-                      checked={musicAutoplay}
-                      onChange={(e) => setMusicAutoplay(e.target.checked)}
-                      className="w-4 h-4 accent-white cursor-pointer"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Preview Pemutar Langsung di Admin GUI */}
-              <div className="bg-zinc-950 border border-zinc-800 rounded-2xl p-5 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <h4 className="text-xs font-bold text-white flex items-center gap-2">
-                      <Play className="w-4 h-4 text-white" />
-                      <span>Tes Dengarkan Suara Musik di Admin GUI</span>
-                    </h4>
-                    <p className="text-[11px] text-zinc-400">
-                      Coba putar sebelum menyimpan untuk memastikan link dan suara berfungsi dengan baik.
-                    </p>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={() => setTestPlaying(!testPlaying)}
-                    disabled={!extractYouTubeId(musicUrl)}
-                    className="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white border border-zinc-700 rounded-xl text-xs font-bold flex items-center gap-2 transition cursor-pointer disabled:opacity-40"
-                  >
-                    {testPlaying ? (
-                      <>
-                        <Pause className="w-3.5 h-3.5 fill-white" />
-                        <span>Hentikan Tes</span>
-                      </>
-                    ) : (
-                      <>
-                        <Play className="w-3.5 h-3.5 fill-white" />
-                        <span>Mulai Tes Dengar</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-
-                {testPlaying && extractYouTubeId(musicUrl) && (
-                  <div className="aspect-video max-w-sm rounded-xl overflow-hidden border border-zinc-800 bg-black mt-2">
-                    <iframe
-                      src={`https://www.youtube.com/embed/${extractYouTubeId(musicUrl)}?autoplay=1&loop=1&playlist=${extractYouTubeId(musicUrl)}`}
-                      title="Admin Music Preview"
-                      className="w-full h-full border-none"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    />
-                  </div>
-                )}
-              </div>
-
-              {/* Tombol Simpan Footer */}
-              <div className="flex justify-end pt-2">
-                <button
-                  type="button"
-                  onClick={handleSaveMusicSettings}
-                  disabled={isSavingMusic}
-                  className="px-6 py-3 bg-white text-black hover:bg-zinc-200 rounded-2xl text-xs font-bold flex items-center gap-2 shadow-2xl transition cursor-pointer disabled:opacity-50"
-                >
-                  {isSavingMusic ? (
-                    <>
-                      <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
-                      <span>Menyimpan Pengaturan...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Check className="w-4 h-4 text-black" />
-                      <span>Simpan & Terapkan Musik ke Seluruh Web</span>
-                    </>
-                  )}
-                </button>
-              </div>
-            </div>
-          )}
+          {/* TAB 4: SEMUA WEBSITE KOMUNITAS */}
           {activeTab === 'all_sites' && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">

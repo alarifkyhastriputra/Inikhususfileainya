@@ -29,22 +29,11 @@ export interface WebsiteRecord {
   isPublic?: boolean;
 }
 
-export interface BackgroundMusicRecord {
-  enabled: boolean;
-  title: string;
-  artist?: string;
-  videoUrl: string; // YouTube or YouTube Music URL
-  volume: number; // 0 - 100
-  autoplay: boolean;
-  loop: boolean;
-}
-
 export interface SettingsRecord {
   requireApprovalForNewUsers: boolean;
   defaultCreditsPerUser: number;
   aiModel: string;
   systemNotice?: string;
-  bgMusic?: BackgroundMusicRecord;
 }
 
 export interface TutorialVideoRecord {
@@ -219,41 +208,40 @@ export function getDatabase(): DatabaseSchema {
     tutorials: [
       {
         id: 'tut_1',
-        title: 'Tutorial 1 cara menggunakan vimos dan upload video',
-        description: 'Panduan langkah demi langkah cara menggunakan platform vimos dan cara mengunggah video ke website Anda.',
-        videoUrl: 'https://youtu.be/Io4rlXTSahk?si=2CqSxT5PrAerIGIr',
-        thumbnailUrl: 'https://img.youtube.com/vi/Io4rlXTSahk/hqdefault.jpg',
-        category: 'Dasar & Upload Video',
-        duration: 'Lengkap',
+        title: 'Panduan Lengkap: Cara Membuat Toko Online Modern dengan vimos.ai',
+        description: 'Pelajari 15 langkah mudah membuat toko online otomatis, menghubungkan tombol checkout WhatsApp, dan mengatur tata letak katalog produk.',
+        videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        category: 'Toko Online',
+        duration: '05:30',
         createdAt: new Date().toISOString(),
-        authorEmail: 'admin@vimos.ai'
+        authorEmail: 'hasbullahbeloh27@gmail.com'
       },
       {
         id: 'tut_2',
-        title: 'Tutorial 2 cara jadin web nya ke public html menggunakan github',
-        description: 'Panduan cara mempublikasikan hasil website ke public html dan hosting gratis menggunakan GitHub Pages.',
-        videoUrl: 'https://youtu.be/KbMVgGXRVb0?si=Vs1iBuZMV_2KokTz',
-        thumbnailUrl: 'https://img.youtube.com/vi/KbMVgGXRVb0/hqdefault.jpg',
-        category: 'Publish & Hosting GitHub',
-        duration: 'Lengkap',
+        title: 'Cara Menggunakan & Upload Link Imgur untuk Foto Produk & Galeri',
+        description: 'Tutorial upload gambar ke Imgur (gratis & cepat) lalu tempelkan tautannya ke vimos.ai untuk mengganti foto produk, portofolio, dan banner hero.',
+        videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        category: 'Upload Foto & Imgur',
+        duration: '03:45',
         createdAt: new Date().toISOString(),
-        authorEmail: 'admin@vimos.ai'
+        authorEmail: 'hasbullahbeloh27@gmail.com'
+      },
+      {
+        id: 'tut_3',
+        title: 'Panduan Admin: Mengelola Member, Kode Seri, & Top-Up Kredit',
+        description: 'Cara mudah admin mencari member dengan kode seri (VMS-XXXX), menambah saldo kredit, dan mereset password akun.',
+        videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        category: 'Admin Dashboard',
+        duration: '04:15',
+        createdAt: new Date().toISOString(),
+        authorEmail: 'hasbullahbeloh27@gmail.com'
       }
     ],
     settings: {
       requireApprovalForNewUsers: false,
       defaultCreditsPerUser: 0,
       aiModel: 'gemini-3.8-flash',
-      systemNotice: 'Selamat datang di vimos.ai platform!',
-      bgMusic: {
-        enabled: true,
-        title: 'Lofi Chill Beats - Ambient Coding',
-        artist: 'Vimos Studio',
-        videoUrl: 'https://music.youtube.com/watch?v=jfKfPfyJRdk',
-        volume: 30,
-        autoplay: true,
-        loop: true
-      }
+      systemNotice: 'Selamat datang di vimos.ai platform!'
     }
   };
 

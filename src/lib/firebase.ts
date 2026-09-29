@@ -24,7 +24,7 @@ import {
   serverTimestamp,
   getDocFromServer
 } from 'firebase/firestore';
-import { UserProfile, UserRole, UserStatus, GeneratedWebsite, SystemSettings, TutorialVideo, BackgroundMusicSettings } from '../types';
+import { UserProfile, UserRole, UserStatus, GeneratedWebsite, SystemSettings, TutorialVideo } from '../types';
 
 export const ADMIN_EMAILS = [
   'nocteos67@gmail.com',
@@ -99,16 +99,7 @@ const DEFAULT_SETTINGS: SystemSettings = {
   requireApprovalForNewUsers: false,
   defaultCreditsPerUser: 0,
   aiModel: 'gemini-3.8-flash',
-  systemNotice: 'Welcome to vimos.ai! Member registrations require admin verification.',
-  bgMusic: {
-    enabled: true,
-    title: 'Lofi Chill Beats - Ambient Coding',
-    artist: 'Vimos Studio',
-    videoUrl: 'https://music.youtube.com/watch?v=jfKfPfyJRdk',
-    volume: 30,
-    autoplay: true,
-    loop: true
-  }
+  systemNotice: 'Welcome to vimos.ai! Member registrations require admin verification.'
 };
 
 // Test firestore connection
@@ -210,43 +201,6 @@ export async function updateSystemSettings(settings: Partial<SystemSettings>): P
     console.warn('Firestore update settings failed, updating local storage:', e);
   }
   localStorage.setItem(LOCAL_SETTINGS_KEY, JSON.stringify(updated));
-}
-
-// Background Music Helpers
-export async function getBackgroundMusic(): Promise<BackgroundMusicSettings | null> {
-  try {
-    const res = await fetch('/api/music');
-    if (res.ok) {
-      const data = await res.json();
-      if (data.success && data.bgMusic) {
-        return data.bgMusic;
-      }
-    }
-  } catch {}
-  const settings = await getSystemSettings();
-  return settings.bgMusic || null;
-}
-
-export async function updateBackgroundMusic(music: Partial<BackgroundMusicSettings>): Promise<BackgroundMusicSettings | null> {
-  try {
-    const res = await fetch('/api/admin/music', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(music)
-    });
-    if (res.ok) {
-      const data = await res.json();
-      if (data.success && data.bgMusic) {
-        const current = await getSystemSettings();
-        current.bgMusic = data.bgMusic;
-        localStorage.setItem(LOCAL_SETTINGS_KEY, JSON.stringify(current));
-        return data.bgMusic;
-      }
-    }
-  } catch (err) {
-    console.error('Failed to update music via API:', err);
-  }
-  return null;
 }
 
 // Verify if user account was created by Admin
@@ -1031,24 +985,22 @@ export async function getTutorialVideos(): Promise<TutorialVideo[]> {
   // Default initial tutorials if none
   return [
     {
-      id: 'tut_1',
-      title: 'Tutorial 1 cara menggunakan vimos dan upload video',
-      description: 'Panduan langkah demi langkah cara menggunakan platform vimos dan cara mengunggah video ke website Anda.',
-      videoUrl: 'https://youtu.be/Io4rlXTSahk?si=2CqSxT5PrAerIGIr',
-      thumbnailUrl: 'https://img.youtube.com/vi/Io4rlXTSahk/hqdefault.jpg',
-      category: 'Dasar & Upload Video',
-      duration: 'Lengkap',
+      id: 'tut_default_1',
+      title: 'Cara Membuat Website Toko Online & Hubungkan WhatsApp',
+      description: 'Panduan lengkap cara merakit toko online modern, menambahkan produk dengan foto Imgur, dan menghubungkan tombol WhatsApp otomatis.',
+      videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+      category: 'Toko Online',
+      duration: '06:15',
       createdAt: new Date().toISOString(),
       authorEmail: 'admin@vimos.ai'
     },
     {
-      id: 'tut_2',
-      title: 'Tutorial 2 cara jadin web nya ke public html menggunakan github',
-      description: 'Panduan cara mempublikasikan hasil website ke public html dan hosting gratis menggunakan GitHub Pages.',
-      videoUrl: 'https://youtu.be/KbMVgGXRVb0?si=Vs1iBuZMV_2KokTz',
-      thumbnailUrl: 'https://img.youtube.com/vi/KbMVgGXRVb0/hqdefault.jpg',
-      category: 'Publish & Hosting GitHub',
-      duration: 'Lengkap',
+      id: 'tut_default_2',
+      title: 'Panduan Upload Gambar Produk Menggunakan Link Imgur',
+      description: 'Cara mudah mengunggah foto produk ke Imgur dan menyalin link langsung untuk mempercantik katalog website Anda.',
+      videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+      category: 'Tips & Trik',
+      duration: '04:30',
       createdAt: new Date().toISOString(),
       authorEmail: 'admin@vimos.ai'
     }

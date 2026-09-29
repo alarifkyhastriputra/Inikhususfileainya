@@ -6,7 +6,6 @@ import { PendingApprovalView } from './components/PendingApprovalView';
 import { WizardMaster } from './components/Wizard/WizardMaster';
 import { AdminDashboardModal } from './components/AdminDashboardModal';
 import { MyProjectsModal } from './components/MyProjectsModal';
-import { BackgroundMusicPlayer } from './components/BackgroundMusicPlayer';
 
 export default function App() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(() => getActiveSession());
@@ -111,7 +110,6 @@ export default function App() {
             loadUserWebsites(effectiveProfile.email);
           }}
         />
-        <BackgroundMusicPlayer />
       </div>
     );
   }
@@ -126,14 +124,11 @@ export default function App() {
   // Account pending approval view
   if (effectiveProfile.status === 'pending' && !isCurrentUserAdmin) {
     return (
-      <>
-        <PendingApprovalView
-          user={effectiveProfile}
-          onRefresh={(updated) => setUserProfile(updated)}
-          onLogout={handleLogout}
-        />
-        <BackgroundMusicPlayer />
-      </>
+      <PendingApprovalView
+        user={effectiveProfile}
+        onRefresh={(updated) => setUserProfile(updated)}
+        onLogout={handleLogout}
+      />
     );
   }
 
@@ -178,9 +173,6 @@ export default function App() {
         }}
         onRefresh={() => loadUserWebsites(effectiveProfile.email)}
       />
-
-      {/* Global Background Music Player (Loops infinitely for all members & visitors) */}
-      <BackgroundMusicPlayer />
     </div>
   );
 }
